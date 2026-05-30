@@ -32,6 +32,29 @@ jobs:
         run: npx vitest run --coverage 2>&1 | tee coverage-output.txt
         if: matrix.node-version == 22
 
+      - name: Update coverage badge
+        if: matrix.node-version == 22 && github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          # Extract total line coverage percentage from vitest output
+          COV_PCT=$(grep -m1 "All files" coverage-output.txt | awk '{print $4}' | sed 's/%//')
+          if [ -z "$COV_PCT" ]; then
+            echo "Could not extract coverage percentage"
+            exit 0
+          fi
+          # Determine badge color
+          if [ "$COV_PCT" -ge 90 ]; then COLOR="brightgreen"
+          elif [ "$COV_PCT" -ge 80 ]; then COLOR="green"
+          elif [ "$COV_PCT" -ge 70 ]; then COLOR="yellow"
+          else COLOR="red"
+          fi
+          # Update the Gist
+          cat > /tmp/coverage.json <<EOF
+          {"schemaVersion":1,"label":"coverage","message":"${COV_PCT}%","color":"${COLOR}"}
+          EOF
+          gh gist edit 8d6eab7c5c1b58ab07d2c812627995e1 /tmp/coverage.json
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Summary
         if: always()
         run: |
@@ -56,7 +79,6 @@ jobs:
             echo "### Coverage" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
             echo '```' >> $GITHUB_STEP_SUMMARY
-            # Extract just the coverage table from output
             grep -A 20 "% Stmts" coverage-output.txt >> $GITHUB_STEP_SUMMARY || true
             echo '```' >> $GITHUB_STEP_SUMMARY
           fi

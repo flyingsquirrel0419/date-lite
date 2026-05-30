@@ -1,6 +1,10 @@
 /**
  * Parse an ISO 8601 date string into a Date object.
  *
+ * Date-only strings (e.g. `'2026-06-30'`) are parsed as local midnight,
+ * matching date-fns behavior. Strings with time components (e.g.
+ * `'2026-06-30T10:30:00'`) use the timezone offset as specified.
+ *
  * @param dateStr - ISO 8601 formatted date string
  * @returns Parsed Date object
  * @throws {RangeError} If the string is not a valid ISO date
@@ -14,6 +18,18 @@ export function parseISO(dateStr: string): Date {
   // Validate basic ISO format
   if (!/^\d{4}-\d{2}-\d{2}/.test(dateStr)) {
     throw new RangeError(`Invalid ISO date string: ${dateStr}`);
+  }
+
+  // date-only strings: parse as local midnight (date-fns compatible)
+  // ECMAScript spec parses date-only ISO as UTC, but date-fns intentionally
+  // interprets them as local time for usability.
+  if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
+    const [y, m, d] = dateStr.split("-").map(Number);
+    const date = new Date(y, m - 1, d);
+    if (isNaN(date.getTime())) {
+      throw new RangeError(`Invalid ISO date string: ${dateStr}`);
+    }
+    return date;
   }
 
   const date = new Date(dateStr);

@@ -38,6 +38,14 @@ jobs:
         run: npx vitest run --coverage 2>&1 | tee coverage-output.txt
         if: matrix.node-version == 22
 
+      - name: Upload coverage to Codecov
+        if: matrix.node-version == 22
+        uses: codecov/codecov-action@v5
+        with:
+          fail_ci_if_error: false
+          files: coverage/coverage-final.json
+          token: ${{ secrets.CODECOV_TOKEN }}
+
       - name: Update coverage badge
         if: matrix.node-version == 22 && github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |

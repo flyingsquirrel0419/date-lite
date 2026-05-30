@@ -1,5 +1,5 @@
 /**
- * date-lite — Zero-dependency, ~1.75KB minzipped date utility library.
+ * date-light — Zero-dependency, ~1.75KB minzipped date utility library.
  *
  * @packageDocumentation
  */

@@ -1,6 +1,6 @@
 ---
 name: Feature Request
-about: Suggest a new function or feature for date-lite
+about: Suggest a new function or feature for date-light
 title: "[Feature] "
 labels: enhancement
 ---
@@ -14,7 +14,7 @@ What problem does this feature solve? Why do you need it?
 What API would you like to see?
 
 ```typescript
-import { } from 'date-lite';
+import { } from 'date-light';
 
 // Example usage of the proposed feature
 ```

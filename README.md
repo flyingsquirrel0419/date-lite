@@ -1,10 +1,10 @@
 <div align="center">
 
-# date-lite
+# date-light
 
 [![CI](https://github.com/flyingsquirrel0419/date-lite/actions/workflows/ci.yml/badge.svg)](https://github.com/flyingsquirrel0419/date-lite/actions/workflows/ci.yml)
 [![Test](https://github.com/flyingsquirrel0419/date-lite/actions/workflows/test.yml/badge.svg)](https://github.com/flyingsquirrel0419/date-lite/actions/workflows/test.yml)
-[![npm version](https://img.shields.io/npm/v/date-lite.svg)](https://www.npmjs.com/package/date-lite)
+[![npm version](https://img.shields.io/npm/v/date-light.svg)](https://www.npmjs.com/package/date-light)
 [![coverage](https://codecov.io/gh/flyingsquirrel0419/date-lite/branch/main/graph/badge.svg)](https://codecov.io/gh/flyingsquirrel0419/date-lite)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![TypeScript](https://img.shields.io/badge/TypeScript-6.0-3178c6.svg)](https://www.typescriptlang.org/)
@@ -34,11 +34,11 @@ Zero dependencies. Full TypeScript types. Pure functions. date-fns compatible AP
 ## Quick Start
 
 ```bash
-npm install date-lite
+npm install date-light
 ```
 
 ```typescript
-import { format, addDays, differenceInDays, isBefore, startOfDay } from "date-lite";
+import { format, addDays, differenceInDays, isBefore, startOfDay } from "date-light";
 
 const today = new Date();
 
@@ -64,22 +64,22 @@ startOfDay(today); // 00:00:00.000
 ### npm
 
 ```bash
-npm install date-lite
+npm install date-light
 ```
 
 ### yarn / pnpm / bun
 
 ```bash
-yarn add date-lite
-pnpm add date-lite
-bun add date-lite
+yarn add date-light
+pnpm add date-light
+bun add date-light
 ```
 
 ### From source
 
 ```bash
-git clone https://github.com/your-org/date-lite.git
-cd date-lite
+git clone https://github.com/your-org/date-light.git
+cd date-light
 npm install
 npm run build
 ```
@@ -91,7 +91,7 @@ npm run build
 ### Format dates
 
 ```typescript
-import { format } from "date-lite";
+import { format } from "date-light";
 
 const date = new Date(2026, 0, 15, 14, 30, 45, 123);
 
@@ -132,7 +132,7 @@ format(date, "EEEE, MMMM d"); // 'Thursday, January 15'
 ### Parse dates
 
 ```typescript
-import { parseISO, parse } from "date-lite";
+import { parseISO, parse } from "date-light";
 
 parseISO("2026-01-15"); // Date (midnight local time)
 parseISO("2026-01-15T10:30:00"); // Date (local time)
@@ -146,7 +146,7 @@ parse("2026-01-15 14:30", "yyyy-MM-dd HH:mm"); // Date
 ### Add & subtract
 
 ```typescript
-import { addDays, addMonths, addYears, addHours, subDays, subMonths } from "date-lite";
+import { addDays, addMonths, addYears, addHours, subDays, subMonths } from "date-light";
 
 const date = new Date(2026, 0, 15);
 
@@ -172,7 +172,7 @@ addYears(new Date(2024, 1, 29), 1); // Feb 28, 2025 (leap to non-leap)
 ### Calculate differences
 
 ```typescript
-import { differenceInDays, differenceInHours, differenceInMonths } from "date-lite";
+import { differenceInDays, differenceInHours, differenceInMonths } from "date-light";
 
 const a = new Date(2026, 5, 30);
 const b = new Date(2026, 0, 1);
@@ -187,7 +187,7 @@ Positive when `dateLeft > dateRight`, negative otherwise.
 ### Compare dates
 
 ```typescript
-import { isBefore, isAfter, isEqual, isSameDay, isSameMonth } from "date-lite";
+import { isBefore, isAfter, isEqual, isSameDay, isSameMonth } from "date-light";
 
 isBefore(new Date(2026, 0, 1), new Date(2026, 0, 2)); // true
 isAfter(new Date(2026, 0, 2), new Date(2026, 0, 1)); // true
@@ -199,7 +199,7 @@ isSameMonth(dateA, dateB); // same year + month?
 ### Query dates
 
 ```typescript
-import { isWeekend, isLeapYear, isValid, getDaysInMonth, getWeekOfYear } from "date-lite";
+import { isWeekend, isLeapYear, isValid, getDaysInMonth, getWeekOfYear } from "date-light";
 
 isWeekend(new Date(2026, 5, 27)); // true (Saturday)
 isLeapYear(new Date(2024, 0, 1)); // true
@@ -212,7 +212,7 @@ getWeekOfYear(new Date(2026, 0, 1)); // 1 (ISO 8601 week number)
 ### Start / end of periods
 
 ```typescript
-import { startOfDay, endOfDay, startOfMonth, endOfMonth, startOfWeek } from "date-lite";
+import { startOfDay, endOfDay, startOfMonth, endOfMonth, startOfWeek } from "date-light";
 
 const date = new Date(2026, 5, 30, 14, 30, 45);
 
@@ -307,7 +307,7 @@ Performance on Node.js 24 — **nanoseconds per operation** (lower = faster), be
 
 ### vs date-fns v4
 
-| Function             | date-lite | date-fns |                 |
+| Function             | date-light | date-fns |                 |
 | -------------------- | --------- | -------- | --------------- |
 | `format`             | 668 ns    | 1,495 ns | **2.2x faster** |
 | `parseISO`           | 138 ns    | 1,218 ns | **8.8x faster** |
@@ -325,7 +325,7 @@ Performance on Node.js 24 — **nanoseconds per operation** (lower = faster), be
 
 ### vs dayjs v1
 
-| Function           | date-lite | dayjs    |                  |
+| Function           | date-light | dayjs    |                  |
 | ------------------ | --------- | -------- | ---------------- |
 | `format`           | 668 ns    | 1,224 ns | **1.8x faster**  |
 | `addDays`          | 80 ns     | 642 ns   | **8.0x faster**  |
@@ -334,35 +334,35 @@ Performance on Node.js 24 — **nanoseconds per operation** (lower = faster), be
 | `isBefore`         | 56 ns     | 531 ns   | **9.5x faster**  |
 | `startOfDay`       | 47 ns     | 349 ns   | **7.4x faster**  |
 
-> **Why so fast?** date-lite calls native `Date` methods directly — no wrapper objects (dayjs), no shared internal modules (date-fns). Pure functions with zero overhead.
+> **Why so fast?** date-light calls native `Date` methods directly — no wrapper objects (dayjs), no shared internal modules (date-fns). Pure functions with zero overhead.
 
 ### Bundle size
 
 | Library                 | minzipped   | Note                               |
 | ----------------------- | ----------- | ---------------------------------- |
-| **date-lite**           | **1.75 KB** | 39 functions, fully tree-shakeable |
+| **date-light**           | **1.75 KB** | 39 functions, fully tree-shakeable |
 | dayjs                   | 2.97 KB     | Core only (plugins add more)       |
 | date-fns (20 functions) | 18.34 KB    | Just the 20 most-used functions    |
 | date-fns (full)         | 261.3 KB    | All 252 functions                  |
 
-> date-lite is **10.5x smaller** than the same 20 date-fns functions and **1.7x smaller** than dayjs core.
+> date-light is **10.5x smaller** than the same 20 date-fns functions and **1.7x smaller** than dayjs core.
 
 ---
 
 ## Migration from date-fns
 
-date-lite uses the same pattern syntax as date-fns (`yyyy-MM-dd`), so most code works with a simple import change:
+date-light uses the same pattern syntax as date-fns (`yyyy-MM-dd`), so most code works with a simple import change:
 
 ```diff
 - import { format, addDays, differenceInDays } from 'date-fns';
-+ import { format, addDays, differenceInDays } from 'date-lite';
++ import { format, addDays, differenceInDays } from 'date-light';
 ```
 
 ### Function mapping
 
 All 20 most-used date-fns functions are supported:
 
-| date-fns            | date-lite           | Status   |
+| date-fns            | date-light           | Status   |
 | ------------------- | ------------------- | -------- |
 | `format`            | `format`            | Same API |
 | `parseISO`          | `parseISO`          | Same API |
@@ -401,8 +401,8 @@ All 20 most-used date-fns functions are supported:
 ### Setup
 
 ```bash
-git clone https://github.com/your-org/date-lite.git
-cd date-lite
+git clone https://github.com/your-org/date-light.git
+cd date-light
 npm install
 ```
 

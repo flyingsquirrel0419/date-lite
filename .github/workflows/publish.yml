@@ -92,7 +92,7 @@ jobs:
           elif [ "$PUBLISH_RESULT" = "success" ]; then
             echo "- **Publish:** Published to npm" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
-            echo "Package: https://www.npmjs.com/package/date-lite" >> $GITHUB_STEP_SUMMARY
+            echo "Package: https://www.npmjs.com/package/date-light" >> $GITHUB_STEP_SUMMARY
           else
             echo "- **Publish:** Failed" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY

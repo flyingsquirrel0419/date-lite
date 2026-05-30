@@ -1,12 +1,12 @@
-# Contributing to date-lite
+# Contributing to date-light
 
 Thank you for your interest in contributing! This guide covers everything you need to get started.
 
 ## Development Setup
 
 ```bash
-git clone https://github.com/your-org/date-lite.git
-cd date-lite
+git clone https://github.com/your-org/date-light.git
+cd date-light
 npm install
 ```
 

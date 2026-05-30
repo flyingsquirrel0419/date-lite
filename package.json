@@ -1,5 +1,5 @@
 {
-  "name": "date-lite",
+  "name": "date-light",
   "version": "0.1.0",
   "description": "Zero-dependency, ~1.8KB minzipped, fully typed date utility library — 39 functions covering the 20 most-used date-fns operations",
   "main": "./dist/index.cjs",
@@ -36,7 +36,7 @@
   "keywords": [
     "date",
     "date-fns",
-    "date-lite",
+    "date-light",
     "format",
     "parse",
     "utility",

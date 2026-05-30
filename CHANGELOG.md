@@ -24,4 +24,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Vitest benchmarks vs date-fns and dayjs
 - Zero runtime dependencies
 
-[0.1.0]: https://github.com/your-org/date-lite/releases/tag/v0.1.0
+[0.1.0]: https://github.com/your-org/date-light/releases/tag/v0.1.0

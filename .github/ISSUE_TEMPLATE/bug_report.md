@@ -1,6 +1,6 @@
 ---
 name: Bug Report
-about: Report a bug in date-lite
+about: Report a bug in date-light
 title: "[Bug] "
 labels: bug
 ---
@@ -12,7 +12,7 @@ A clear description of the bug.
 ## Reproduction
 
 ```typescript
-import { } from 'date-lite';
+import { } from 'date-light';
 
 // Minimal code that reproduces the issue
 ```
@@ -27,7 +27,7 @@ What actually happened.
 
 ## Environment
 
-- date-lite version:
+- date-light version:
 - Node.js version:
 - TypeScript version:
 - OS:

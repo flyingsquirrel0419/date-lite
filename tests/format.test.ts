@@ -92,6 +92,12 @@ describe("format — all tokens", () => {
     expect(format(d, "M/d/yyyy")).toBe("1/5/2026");
   });
 
+  it("formats month names with MMMM and MMM", () => {
+    const d = new Date(2026, 0, 15);
+    expect(format(d, "MMMM d")).toBe("January 15");
+    expect(format(d, "MMM d")).toBe("Jan 15");
+  });
+
   it("formats 12h with AM/PM", () => {
     const morning = new Date(2026, 0, 15, 9, 5);
     expect(format(morning, "h:mm a")).toBe("9:05 AM");
@@ -111,6 +117,11 @@ describe("format — all tokens", () => {
     const d = new Date(2026, 0, 15); // Thursday
     expect(format(d, "EEEE")).toBe("Thursday");
     expect(format(d, "EEE")).toBe("Thu");
+  });
+
+  it("formats weekday EEEEE", () => {
+    const d = new Date(2026, 0, 15); // Thursday
+    expect(format(d, "EEEEE")).toBe("T");
   });
 
   it("formats H (unpadded 24h)", () => {

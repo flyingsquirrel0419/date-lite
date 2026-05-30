@@ -110,6 +110,8 @@ format(date, "EEEE, MMMM d"); // 'Thursday, January 15'
 | ------ | ------------------------ | ----------- |
 | `yyyy` | 4-digit year             | `2026`      |
 | `yy`   | 2-digit year             | `26`        |
+| `MMMM` | Full month name          | `January`   |
+| `MMM`  | Short month name         | `Jan`       |
 | `MM`   | Zero-padded month        | `01`-`12`   |
 | `M`    | Month                    | `1`-`12`    |
 | `dd`   | Zero-padded day          | `01`-`31`   |
@@ -124,6 +126,7 @@ format(date, "EEEE, MMMM d"); // 'Thursday, January 15'
 | `s`    | Seconds                  | `0`-`59`    |
 | `SSS`  | Zero-padded milliseconds | `000`-`999` |
 | `a`    | AM / PM                  | `AM` / `PM` |
+| `EEEEE` | Narrow weekday name      | `M`         |
 | `EEEE` | Full weekday name        | `Monday`    |
 | `EEE`  | Short weekday name       | `Mon`       |
 

@@ -44,7 +44,15 @@
     "lightweight",
     "minimal"
   ],
-  "author": "",
+  "author": "flyingsquirrel0419",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/flyingsquirrel0419/date-light"
+  },
+  "homepage": "https://github.com/flyingsquirrel0419/date-light#readme",
+  "bugs": {
+    "url": "https://github.com/flyingsquirrel0419/date-light/issues"
+  },
   "license": "MIT",
   "devDependencies": {
     "@eslint/js": "^10.0.1",

@@ -2,8 +2,10 @@
 
 # date-lite
 
-[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![CI](https://github.com/flyingsquirrel0419/date-lite/actions/workflows/ci.yml/badge.svg)](https://github.com/flyingsquirrel0419/date-lite/actions/workflows/ci.yml)
+[![Test](https://github.com/flyingsquirrel0419/date-lite/actions/workflows/test.yml/badge.svg)](https://github.com/flyingsquirrel0419/date-lite/actions/workflows/test.yml)
 [![npm version](https://img.shields.io/npm/v/date-lite.svg)](https://www.npmjs.com/package/date-lite)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![TypeScript](https://img.shields.io/badge/TypeScript-6.0-3178c6.svg)](https://www.typescriptlang.org/)
 
 **The 20 date-fns functions you actually use — in 1.75 KB.**

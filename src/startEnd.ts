@@ -8,9 +8,9 @@
  * startOfDay(new Date(2026, 5, 30, 14, 30)) // Jun 30 2026 00:00:00.000
  */
 export function startOfDay(date: Date): Date {
-	const result = new Date(date);
-	result.setHours(0, 0, 0, 0);
-	return result;
+  const result = new Date(date);
+  result.setHours(0, 0, 0, 0);
+  return result;
 }
 
 /**
@@ -20,9 +20,9 @@ export function startOfDay(date: Date): Date {
  * @returns A new Date set to the last millisecond of the day
  */
 export function endOfDay(date: Date): Date {
-	const result = new Date(date);
-	result.setHours(23, 59, 59, 999);
-	return result;
+  const result = new Date(date);
+  result.setHours(23, 59, 59, 999);
+  return result;
 }
 
 /**
@@ -37,13 +37,13 @@ export function endOfDay(date: Date): Date {
  * startOfWeek(new Date(2026, 5, 30)) // Monday Jun 29 00:00:00.000
  */
 export function startOfWeek(date: Date): Date {
-	const result = new Date(date);
-	const day = result.getDay(); // 0=Sun ... 6=Sat
-	// ISO 8601: week starts on Monday. diff: Mon=0, Tue=1, ..., Sun=6
-	const diff = day === 0 ? 6 : day - 1;
-	result.setDate(result.getDate() - diff);
-	result.setHours(0, 0, 0, 0);
-	return result;
+  const result = new Date(date);
+  const day = result.getDay(); // 0=Sun ... 6=Sat
+  // ISO 8601: week starts on Monday. diff: Mon=0, Tue=1, ..., Sun=6
+  const diff = day === 0 ? 6 : day - 1;
+  result.setDate(result.getDate() - diff);
+  result.setHours(0, 0, 0, 0);
+  return result;
 }
 
 /**
@@ -53,11 +53,11 @@ export function startOfWeek(date: Date): Date {
  * @returns A new Date set to Sunday end-of-day of the same week
  */
 export function endOfWeek(date: Date): Date {
-	const start = startOfWeek(date);
-	const result = new Date(start);
-	result.setDate(result.getDate() + 6);
-	result.setHours(23, 59, 59, 999);
-	return result;
+  const start = startOfWeek(date);
+  const result = new Date(start);
+  result.setDate(result.getDate() + 6);
+  result.setHours(23, 59, 59, 999);
+  return result;
 }
 
 /**
@@ -67,10 +67,10 @@ export function endOfWeek(date: Date): Date {
  * @returns A new Date set to the first day of the month at midnight
  */
 export function startOfMonth(date: Date): Date {
-	const result = new Date(date);
-	result.setDate(1);
-	result.setHours(0, 0, 0, 0);
-	return result;
+  const result = new Date(date);
+  result.setDate(1);
+  result.setHours(0, 0, 0, 0);
+  return result;
 }
 
 /**
@@ -86,11 +86,11 @@ export function startOfMonth(date: Date): Date {
  * endOfMonth(new Date(2024, 1, 15)) // Feb 29 2024 23:59:59.999 (leap year)
  */
 export function endOfMonth(date: Date): Date {
-	const result = new Date(date);
-	// Day 0 of next month = last day of current month
-	result.setMonth(result.getMonth() + 1, 0);
-	result.setHours(23, 59, 59, 999);
-	return result;
+  const result = new Date(date);
+  // Day 0 of next month = last day of current month
+  result.setMonth(result.getMonth() + 1, 0);
+  result.setHours(23, 59, 59, 999);
+  return result;
 }
 
 /**
@@ -100,7 +100,7 @@ export function endOfMonth(date: Date): Date {
  * @returns A new Date set to January 1 at midnight
  */
 export function startOfYear(date: Date): Date {
-	return new Date(date.getFullYear(), 0, 1, 0, 0, 0, 0);
+  return new Date(date.getFullYear(), 0, 1, 0, 0, 0, 0);
 }
 
 /**
@@ -110,5 +110,5 @@ export function startOfYear(date: Date): Date {
  * @returns A new Date set to December 31 at 23:59:59.999
  */
 export function endOfYear(date: Date): Date {
-	return new Date(date.getFullYear(), 11, 31, 23, 59, 59, 999);
+  return new Date(date.getFullYear(), 11, 31, 23, 59, 59, 999);
 }

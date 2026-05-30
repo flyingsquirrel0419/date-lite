@@ -8,8 +8,8 @@
  * isWeekend(new Date(2026, 5, 27)) // true (Saturday)
  */
 export function isWeekend(date: Date): boolean {
-	const day = date.getDay();
-	return day === 0 || day === 6;
+  const day = date.getDay();
+  return day === 0 || day === 6;
 }
 
 /**
@@ -29,8 +29,8 @@ export function isWeekend(date: Date): boolean {
  * isLeapYear(new Date(2000, 0, 1)) // true  (century, ÷ 400)
  */
 export function isLeapYear(date: Date): boolean {
-	const year = date.getFullYear();
-	return year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
+  const year = date.getFullYear();
+  return year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
 }
 
 /**
@@ -43,7 +43,7 @@ export function isLeapYear(date: Date): boolean {
  * @returns `true` if the Date is valid
  */
 export function isValid(date: Date): boolean {
-	return !isNaN(date.getTime());
+  return !isNaN(date.getTime());
 }
 
 /**
@@ -59,10 +59,10 @@ export function isValid(date: Date): boolean {
  * getDaysInMonth(new Date(2024, 1, 1)) // 29 (leap year February)
  */
 export function getDaysInMonth(date: Date): number {
-	const year = date.getFullYear();
-	const month = date.getMonth();
-	// Day 0 of next month = last day of current month
-	return new Date(year, month + 1, 0).getDate();
+  const year = date.getFullYear();
+  const month = date.getMonth();
+  // Day 0 of next month = last day of current month
+  return new Date(year, month + 1, 0).getDate();
 }
 
 /**
@@ -78,13 +78,13 @@ export function getDaysInMonth(date: Date): number {
  * getWeekOfYear(new Date(2026, 0, 1)) // 1
  */
 export function getWeekOfYear(date: Date): number {
-	const d = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-	// Set to nearest Thursday (ISO week starts Monday)
-	const dayNum = d.getDay(); // 0=Sun ... 6=Sat
-	// ISO: Mon=1 ... Sun=7
-	const isoDay = dayNum === 0 ? 7 : dayNum;
-	d.setDate(d.getDate() + 4 - isoDay);
-	// Get the Jan 1 of the year of that Thursday
-	const yearStart = new Date(d.getFullYear(), 0, 1);
-	return Math.ceil(((d.getTime() - yearStart.getTime()) / 86400000 + 1) / 7);
+  const d = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  // Set to nearest Thursday (ISO week starts Monday)
+  const dayNum = d.getDay(); // 0=Sun ... 6=Sat
+  // ISO: Mon=1 ... Sun=7
+  const isoDay = dayNum === 0 ? 7 : dayNum;
+  d.setDate(d.getDate() + 4 - isoDay);
+  // Get the Jan 1 of the year of that Thursday
+  const yearStart = new Date(d.getFullYear(), 0, 1);
+  return Math.ceil(((d.getTime() - yearStart.getTime()) / 86400000 + 1) / 7);
 }

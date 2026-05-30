@@ -12,9 +12,9 @@
  * addDays(new Date(2026, 0, 15), 7) // Jan 22, 2026
  */
 export function addDays(date: Date, amount: number): Date {
-	const result = new Date(date);
-	result.setDate(result.getDate() + amount);
-	return result;
+  const result = new Date(date);
+  result.setDate(result.getDate() + amount);
+  return result;
 }
 
 /**
@@ -32,14 +32,14 @@ export function addDays(date: Date, amount: number): Date {
  * addMonths(new Date(2026, 0, 31), 1) // Feb 28, 2026 (clamped)
  */
 export function addMonths(date: Date, amount: number): Date {
-	const result = new Date(date);
-	const targetMonth = result.getMonth() + amount;
-	result.setMonth(targetMonth);
-	// Handle month overflow: e.g. Jan 31 + 1 month should not become Mar 3
-	if (result.getMonth() !== ((targetMonth % 12) + 12) % 12) {
-		result.setDate(0); // last day of previous month
-	}
-	return result;
+  const result = new Date(date);
+  const targetMonth = result.getMonth() + amount;
+  result.setMonth(targetMonth);
+  // Handle month overflow: e.g. Jan 31 + 1 month should not become Mar 3
+  if (result.getMonth() !== ((targetMonth % 12) + 12) % 12) {
+    result.setDate(0); // last day of previous month
+  }
+  return result;
 }
 
 /**
@@ -55,19 +55,15 @@ export function addMonths(date: Date, amount: number): Date {
  * addYears(new Date(2024, 1, 29), 1) // Feb 28, 2025 (leap → non-leap)
  */
 export function addYears(date: Date, amount: number): Date {
-	const result = new Date(date);
-	const targetYear = result.getFullYear() + amount;
-	// Handle Feb 29 → Feb 28 in non-leap year BEFORE setFullYear
-	// because setFullYear auto-rolls to Mar 1
-	if (
-		date.getMonth() === 1 &&
-		date.getDate() === 29 &&
-		!isLeapYearHelper(targetYear)
-	) {
-		result.setDate(28);
-	}
-	result.setFullYear(targetYear);
-	return result;
+  const result = new Date(date);
+  const targetYear = result.getFullYear() + amount;
+  // Handle Feb 29 → Feb 28 in non-leap year BEFORE setFullYear
+  // because setFullYear auto-rolls to Mar 1
+  if (date.getMonth() === 1 && date.getDate() === 29 && !isLeapYearHelper(targetYear)) {
+    result.setDate(28);
+  }
+  result.setFullYear(targetYear);
+  return result;
 }
 
 /**
@@ -78,9 +74,9 @@ export function addYears(date: Date, amount: number): Date {
  * @returns A new Date with the hours added
  */
 export function addHours(date: Date, amount: number): Date {
-	const result = new Date(date);
-	result.setTime(result.getTime() + amount * 3600000);
-	return result;
+  const result = new Date(date);
+  result.setTime(result.getTime() + amount * 3600000);
+  return result;
 }
 
 /**
@@ -91,9 +87,9 @@ export function addHours(date: Date, amount: number): Date {
  * @returns A new Date with the minutes added
  */
 export function addMinutes(date: Date, amount: number): Date {
-	const result = new Date(date);
-	result.setTime(result.getTime() + amount * 60000);
-	return result;
+  const result = new Date(date);
+  result.setTime(result.getTime() + amount * 60000);
+  return result;
 }
 
 /**
@@ -104,45 +100,45 @@ export function addMinutes(date: Date, amount: number): Date {
  * @returns A new Date with the seconds added
  */
 export function addSeconds(date: Date, amount: number): Date {
-	const result = new Date(date);
-	result.setTime(result.getTime() + amount * 1000);
-	return result;
+  const result = new Date(date);
+  result.setTime(result.getTime() + amount * 1000);
+  return result;
 }
 
 // ─── Sub functions (negative wrappers around add) ────────────────
 
 /** Subtract days from a date. @see addDays */
 export function subDays(date: Date, amount: number): Date {
-	return addDays(date, -amount);
+  return addDays(date, -amount);
 }
 
 /** Subtract months from a date. @see addMonths */
 export function subMonths(date: Date, amount: number): Date {
-	return addMonths(date, -amount);
+  return addMonths(date, -amount);
 }
 
 /** Subtract years from a date. @see addYears */
 export function subYears(date: Date, amount: number): Date {
-	return addYears(date, -amount);
+  return addYears(date, -amount);
 }
 
 /** Subtract hours from a date. @see addHours */
 export function subHours(date: Date, amount: number): Date {
-	return addHours(date, -amount);
+  return addHours(date, -amount);
 }
 
 /** Subtract minutes from a date. @see addMinutes */
 export function subMinutes(date: Date, amount: number): Date {
-	return addMinutes(date, -amount);
+  return addMinutes(date, -amount);
 }
 
 /** Subtract seconds from a date. @see addSeconds */
 export function subSeconds(date: Date, amount: number): Date {
-	return addSeconds(date, -amount);
+  return addSeconds(date, -amount);
 }
 
 // ─── Internal helper ─────────────────────────────────────────────
 
 function isLeapYearHelper(year: number): boolean {
-	return year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
+  return year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
 }

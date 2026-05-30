@@ -19,9 +19,9 @@ const MS_PER_DAY = 86400000;
  * differenceInDays(new Date(2026, 5, 30), new Date(2026, 5, 28)) // 2
  */
 export function differenceInDays(dateLeft: Date, dateRight: Date): number {
-	const left = startOfDay(dateLeft);
-	const right = startOfDay(dateRight);
-	return Math.round((left.getTime() - right.getTime()) / MS_PER_DAY);
+  const left = startOfDay(dateLeft);
+  const right = startOfDay(dateRight);
+  return Math.round((left.getTime() - right.getTime()) / MS_PER_DAY);
 }
 
 /**
@@ -32,7 +32,7 @@ export function differenceInDays(dateLeft: Date, dateRight: Date): number {
  * @returns Number of full hours (positive if dateLeft > dateRight)
  */
 export function differenceInHours(dateLeft: Date, dateRight: Date): number {
-	return Math.round((dateLeft.getTime() - dateRight.getTime()) / MS_PER_HOUR);
+  return Math.round((dateLeft.getTime() - dateRight.getTime()) / MS_PER_HOUR);
 }
 
 /**
@@ -43,7 +43,7 @@ export function differenceInHours(dateLeft: Date, dateRight: Date): number {
  * @returns Number of full minutes (positive if dateLeft > dateRight)
  */
 export function differenceInMinutes(dateLeft: Date, dateRight: Date): number {
-	return Math.round((dateLeft.getTime() - dateRight.getTime()) / MS_PER_MINUTE);
+  return Math.round((dateLeft.getTime() - dateRight.getTime()) / MS_PER_MINUTE);
 }
 
 /**
@@ -54,7 +54,7 @@ export function differenceInMinutes(dateLeft: Date, dateRight: Date): number {
  * @returns Number of full seconds (positive if dateLeft > dateRight)
  */
 export function differenceInSeconds(dateLeft: Date, dateRight: Date): number {
-	return Math.round((dateLeft.getTime() - dateRight.getTime()) / MS_PER_SECOND);
+  return Math.round((dateLeft.getTime() - dateRight.getTime()) / MS_PER_SECOND);
 }
 
 /**
@@ -70,9 +70,9 @@ export function differenceInSeconds(dateLeft: Date, dateRight: Date): number {
  * differenceInMonths(new Date(2026, 5, 15), new Date(2026, 0, 15)) // 5
  */
 export function differenceInMonths(dateLeft: Date, dateRight: Date): number {
-	const yearDiff = dateLeft.getFullYear() - dateRight.getFullYear();
-	const monthDiff = dateLeft.getMonth() - dateRight.getMonth();
-	return yearDiff * 12 + monthDiff;
+  const yearDiff = dateLeft.getFullYear() - dateRight.getFullYear();
+  const monthDiff = dateLeft.getMonth() - dateRight.getMonth();
+  return yearDiff * 12 + monthDiff;
 }
 
 /**
@@ -86,13 +86,10 @@ export function differenceInMonths(dateLeft: Date, dateRight: Date): number {
  * @returns Number of full calendar years (positive if dateLeft > dateRight)
  */
 export function differenceInYears(dateLeft: Date, dateRight: Date): number {
-	const yearDiff = dateLeft.getFullYear() - dateRight.getFullYear();
-	const monthDiff = dateLeft.getMonth() - dateRight.getMonth();
-	if (
-		monthDiff < 0 ||
-		(monthDiff === 0 && dateLeft.getDate() < dateRight.getDate())
-	) {
-		return yearDiff - 1;
-	}
-	return yearDiff;
+  const yearDiff = dateLeft.getFullYear() - dateRight.getFullYear();
+  const monthDiff = dateLeft.getMonth() - dateRight.getMonth();
+  if (monthDiff < 0 || (monthDiff === 0 && dateLeft.getDate() < dateRight.getDate())) {
+    return yearDiff - 1;
+  }
+  return yearDiff;
 }

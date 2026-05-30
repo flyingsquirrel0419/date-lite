@@ -303,33 +303,36 @@ endOfYear(date); // Thu Dec 31 2026 23:59:59.999
 
 ## Benchmarks
 
-Performance on Node.js 24 — **ops/sec** (higher = faster), best of 3 x 5M iterations.
+Performance on Node.js 24 — **nanoseconds per operation** (lower = faster), best of 3 x 5M iterations.
 
 ### vs date-fns v4
 
-| Function           | date-lite   | date-fns   | Ratio     |
-| ------------------ | ----------- | ---------- | --------- |
-| `format`           | 1,480,248   | 673,310    | **2.2x**  |
-| `parseISO`         | 8,237,323   | 802,852    | **10.3x** |
-| `addDays`          | 12,649,074  | 12,422,293 | ~same     |
-| `addMonths`        | 7,825,218   | 6,665,298  | **1.2x**  |
-| `differenceInDays` | 9,037,117   | 1,043,682  | **8.7x**  |
-| `isBefore`         | 22,714,335  | 6,910,797  | **3.3x**  |
-| `startOfDay`       | 20,175,145  | 20,557,415 | ~same     |
-| `isWeekend`        | 225,890,840 | 24,086,930 | **9.4x**  |
-| `isLeapYear`       | 222,980,803 | 23,406,377 | **9.5x**  |
-| `getDaysInMonth`   | 15,797,587  | 5,891,619  | **2.7x**  |
+| Function | date-lite | date-fns | |
+|----------|----------|----------|-|
+| `format` | 668 ns | 1,495 ns | **2.2x faster** |
+| `parseISO` | 138 ns | 1,218 ns | **8.8x faster** |
+| `addDays` | 80 ns | 79 ns | ~same |
+| `addMonths` | 133 ns | 154 ns | **1.2x faster** |
+| `subDays` | 79 ns | 81 ns | ~same |
+| `differenceInDays` | 117 ns | 946 ns | **8.1x faster** |
+| `differenceInMonths` | 11 ns | 798 ns | **72x faster** |
+| `isBefore` | 56 ns | 148 ns | **2.6x faster** |
+| `startOfDay` | 47 ns | 49 ns | ~same |
+| `endOfDay` | 52 ns | 51 ns | ~same |
+| `isWeekend` | 4 ns | 39 ns | **9.8x faster** |
+| `isLeapYear` | 5 ns | 41 ns | **8.2x faster** |
+| `getDaysInMonth` | 65 ns | 160 ns | **2.5x faster** |
 
 ### vs dayjs v1
 
-| Function           | date-lite  | dayjs     | Ratio     |
-| ------------------ | ---------- | --------- | --------- |
-| `format`           | 1,480,248  | 791,111   | **1.9x**  |
-| `addDays`          | 12,649,074 | 1,445,087 | **8.7x**  |
-| `addMonths`        | 7,825,218  | 467,717   | **16.7x** |
-| `differenceInDays` | 9,037,117  | 3,462,393 | **2.6x**  |
-| `isBefore`         | 22,714,335 | 2,009,216 | **11.3x** |
-| `startOfDay`       | 20,175,145 | 2,586,627 | **7.8x**  |
+| Function | date-lite | dayjs | |
+|----------|----------|-------|-|
+| `format` | 668 ns | 1,224 ns | **1.8x faster** |
+| `addDays` | 80 ns | 642 ns | **8.0x faster** |
+| `addMonths` | 133 ns | 2,067 ns | **15.5x faster** |
+| `differenceInDays` | 117 ns | 356 ns | **3.0x faster** |
+| `isBefore` | 56 ns | 531 ns | **9.5x faster** |
+| `startOfDay` | 47 ns | 349 ns | **7.4x faster** |
 
 > **Why so fast?** date-lite calls native `Date` methods directly — no wrapper objects (dayjs), no shared internal modules (date-fns). Pure functions with zero overhead.
 

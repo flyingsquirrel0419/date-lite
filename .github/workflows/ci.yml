@@ -1,0 +1,88 @@
+name: Lint & Type Check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint-typecheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Type check
+        id: typecheck
+        run: npx tsc --noEmit 2>&1 | tee typecheck-output.txt
+
+      - name: Lint
+        id: lint
+        run: npx eslint src/ 2>&1 | tee lint-output.txt
+        continue-on-error: true
+
+      - name: Format check
+        id: format
+        run: npx prettier --check "src/**/*.ts" 2>&1 | tee format-output.txt
+        continue-on-error: true
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "## Lint & Type Check Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          TYPECHECK_RESULT="${{ steps.typecheck.outcome }}"
+          LINT_RESULT="${{ steps.lint.outcome }}"
+          FORMAT_RESULT="${{ steps.format.outcome }}"
+
+          # Type check
+          if [ "$TYPECHECK_RESULT" = "success" ]; then
+            echo "- **Type check:** Passed" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "- **Type check:** Failed" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            cat typecheck-output.txt >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+          fi
+
+          # Lint
+          if [ "$LINT_RESULT" = "success" ]; then
+            echo "- **Lint:** Passed" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "- **Lint:** Failed" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            cat lint-output.txt >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+          fi
+
+          # Format
+          if [ "$FORMAT_RESULT" = "success" ]; then
+            echo "- **Format:** Passed" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "- **Format:** Failed (run \`npm run format\`)" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            cat format-output.txt >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+          fi
+
+          # Overall result
+          if [ "$TYPECHECK_RESULT" = "success" ] && [ "$LINT_RESULT" = "success" ] && [ "$FORMAT_RESULT" = "success" ]; then
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "**All checks passed.**" >> $GITHUB_STEP_SUMMARY
+            exit 0
+          else
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "**Some checks failed. See details above.**" >> $GITHUB_STEP_SUMMARY
+            exit 1
+          fi

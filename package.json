@@ -1,0 +1,62 @@
+{
+  "name": "date-lite",
+  "version": "0.1.0",
+  "description": "Zero-dependency, ~1.8KB minzipped, fully typed date utility library — 39 functions covering the 20 most-used date-fns operations",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "bench": "vitest bench",
+    "lint": "eslint src/",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "format:check": "prettier --check \"src/**/*.ts\"",
+    "typecheck": "tsc --noEmit",
+    "check": "npm run typecheck && npm run lint && npm run format:check && npm run test"
+  },
+  "keywords": [
+    "date",
+    "date-fns",
+    "date-lite",
+    "format",
+    "parse",
+    "utility",
+    "tiny",
+    "lightweight",
+    "minimal"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@vitest/coverage-v8": "^4.1.7",
+    "date-fns": "^4.4.0",
+    "dayjs": "^1.11.21",
+    "eslint": "^10.4.0",
+    "prettier": "^3.8.3",
+    "tsup": "^8.5.1",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.7"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

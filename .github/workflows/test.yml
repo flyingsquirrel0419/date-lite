@@ -1,0 +1,82 @@
+name: Test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18, 20, 22]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+
+      - run: npm ci
+
+      - name: Run tests
+        id: tests
+        run: npx vitest run 2>&1 | tee test-output.txt
+
+      - name: Coverage
+        id: coverage
+        run: npx vitest run --coverage 2>&1 | tee coverage-output.txt
+        if: matrix.node-version == 22
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "## Test Summary (Node.js ${{ matrix.node-version }})" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          TEST_RESULT="${{ steps.tests.outcome }}"
+
+          if [ "$TEST_RESULT" = "success" ]; then
+            echo "- **Tests:** Passed" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "- **Tests:** Failed" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            cat test-output.txt >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+          fi
+
+          # Coverage summary (only on Node 22)
+          if [ "${{ matrix.node-version }}" = "22" ]; then
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "### Coverage" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            # Extract just the coverage table from output
+            grep -A 20 "% Stmts" coverage-output.txt >> $GITHUB_STEP_SUMMARY || true
+            echo '```' >> $GITHUB_STEP_SUMMARY
+          fi
+
+          if [ "$TEST_RESULT" != "success" ]; then
+            exit 1
+          fi
+
+  # Consolidated summary across all Node versions
+  test-summary:
+    needs: test
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate summary
+        run: |
+          echo "## Test Matrix Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Node.js | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|---------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| 18 | ${{ needs.test.result == 'success' && 'Passed' || 'Failed' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| 20 | ${{ needs.test.result == 'success' && 'Passed' || 'Failed' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| 22 | ${{ needs.test.result == 'success' && 'Passed' || 'Failed' }} |" >> $GITHUB_STEP_SUMMARY

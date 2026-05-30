@@ -3,6 +3,8 @@ name: Lint & Type Check
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - coverage-badge.json
   pull_request:
     branches: [main]
 

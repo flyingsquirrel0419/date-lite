@@ -33,7 +33,6 @@ jobs:
           SIZE=$(node -e "const z=require('zlib'),f=require('fs');process.stdout.write((z.gzipSync(f.readFileSync('dist/index.mjs')).length/1024).toFixed(2))")
           echo "size_kb=$SIZE" >> $GITHUB_OUTPUT
           echo "Bundle minzipped: ${SIZE} KB"
-          # Fail if over 5KB budget
           if (( $(echo "$SIZE > 5" | bc -l) )); then
             echo "::error::Bundle size ${SIZE} KB exceeds 5 KB budget"
             exit 1
@@ -51,6 +50,8 @@ jobs:
             echo "::warning::NPM_TOKEN secret is not configured. Publish will be skipped."
           else
             echo "has_token=true" >> $GITHUB_OUTPUT
+            # Verify token works by checking npm identity
+            npm whoami 2>/dev/null || echo "::warning::NPM_TOKEN is set but npm whoami failed — token may be invalid or lack publish permission"
           fi
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -94,9 +95,16 @@ jobs:
             echo "Package: https://www.npmjs.com/package/date-lite" >> $GITHUB_STEP_SUMMARY
           else
             echo "- **Publish:** Failed" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "### Common causes" >> $GITHUB_STEP_SUMMARY
+            echo "- NPM_TOKEN is expired or revoked" >> $GITHUB_STEP_SUMMARY
+            echo "- NPM_TOKEN lacks **publish** permission (needs Automation or Read and Write)" >> $GITHUB_STEP_SUMMARY
+            echo "- Package name is already taken by another account" >> $GITHUB_STEP_SUMMARY
+            echo "- 2FA is enabled on npm but token is not an Automation token" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "> Fix: Go to https://www.npmjs.com/settings/tokens and create a **Classic Automation token** or a **Granular Access Token with Read and Write** permission." >> $GITHUB_STEP_SUMMARY
           fi
 
-          # Overall: build/test must pass regardless of publish
           BUILD_RESULT="${{ steps.build.outcome }}"
           TEST_RESULT="${{ steps.test.outcome }}"
           if [ "$BUILD_RESULT" != "success" ] || [ "$TEST_RESULT" != "success" ]; then

@@ -2,10 +2,10 @@
 
 # date-light
 
-[![CI](https://github.com/flyingsquirrel0419/date-lite/actions/workflows/ci.yml/badge.svg)](https://github.com/flyingsquirrel0419/date-lite/actions/workflows/ci.yml)
-[![Test](https://github.com/flyingsquirrel0419/date-lite/actions/workflows/test.yml/badge.svg)](https://github.com/flyingsquirrel0419/date-lite/actions/workflows/test.yml)
+[![CI](https://github.com/flyingsquirrel0419/date-light/actions/workflows/ci.yml/badge.svg)](https://github.com/flyingsquirrel0419/date-light/actions/workflows/ci.yml)
+[![Test](https://github.com/flyingsquirrel0419/date-light/actions/workflows/test.yml/badge.svg)](https://github.com/flyingsquirrel0419/date-light/actions/workflows/test.yml)
 [![npm version](https://img.shields.io/npm/v/date-light.svg)](https://www.npmjs.com/package/date-light)
-[![coverage](https://codecov.io/gh/flyingsquirrel0419/date-lite/branch/main/graph/badge.svg)](https://codecov.io/gh/flyingsquirrel0419/date-lite)
+[![coverage](https://codecov.io/gh/flyingsquirrel0419/date-light/branch/main/graph/badge.svg)](https://codecov.io/gh/flyingsquirrel0419/date-light)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![TypeScript](https://img.shields.io/badge/TypeScript-6.0-3178c6.svg)](https://www.typescriptlang.org/)
 

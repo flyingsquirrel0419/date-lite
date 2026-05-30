@@ -1,6 +1,18 @@
+const MONTH_NAMES = [
+  "January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December",
+];
+
+const MONTH_ABBREVS = [
+  "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+];
+
 const TOKENS: Record<string, (d: Date) => string> = {
   yyyy: (d) => String(d.getFullYear()).padStart(4, "0"),
   yy: (d) => String(d.getFullYear() % 100).padStart(2, "0"),
+  MMMM: (d) => MONTH_NAMES[d.getMonth()],
+  MMM: (d) => MONTH_ABBREVS[d.getMonth()],
   MM: (d) => String(d.getMonth() + 1).padStart(2, "0"),
   M: (d) => String(d.getMonth() + 1),
   dd: (d) => String(d.getDate()).padStart(2, "0"),
@@ -30,7 +42,7 @@ const TOKEN_RE = new RegExp(`(${SORTED_TOKENS.join("|")})`, "g");
  *
  * Uses date-fns compatible pattern syntax (not dayjs-style YYYY).
  *
- * Supported tokens: yyyy, yy, MM, M, dd, d, HH, H, hh, h, mm, m,
+ * Supported tokens: yyyy, yy, MMMM, MMM, MM, M, dd, d, HH, H, hh, h, mm, m,
  * ss, s, SSS, a, EEEE, EEE
  *
  * @param date - The Date object to format

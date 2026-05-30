@@ -3,8 +3,6 @@ name: Test
 on:
   push:
     branches: [main]
-    paths-ignore:
-      - coverage-badge.json
   pull_request:
     branches: [main]
 
@@ -43,7 +41,7 @@ jobs:
             echo "Could not extract coverage percentage"
             exit 0
           fi
-          # Round to integer (handles 97.14 → 97)
+          # Round to integer
           COV_INT=$(echo "$COV_PCT" | awk '{printf "%.0f", $1}')
           # Determine badge color
           if [ "$COV_INT" -ge 90 ]; then COLOR="brightgreen"
@@ -51,16 +49,13 @@ jobs:
           elif [ "$COV_INT" -ge 70 ]; then COLOR="yellow"
           else COLOR="red"
           fi
-          # Write badge JSON
-          cat > coverage-badge.json <<EOF
+          # Update the Gist
+          cat > /tmp/coverage.json <<EOF
           {"schemaVersion":1,"label":"coverage","message":"${COV_INT}%","color":"${COLOR}"}
           EOF
-          # Commit and push if changed
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add coverage-badge.json
-          git diff --cached --quiet || git commit -m "Update coverage badge [skip ci]"
-          git push
+          gh gist edit 8d6eab7c5c1b58ab07d2c812627995e1 /tmp/coverage.json
+        env:
+          GH_TOKEN: ${{ secrets.BADGE_GIST_TOKEN }}
 
       - name: Summary
         if: always()

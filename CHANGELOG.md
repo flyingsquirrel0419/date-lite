@@ -5,6 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.1] - 2026-05-31
+
+### Added
+
+- `MMMM` token in `format()` — full month name (January..December)
+- `MMM` token in `format()` — abbreviated month name (Jan..Dec)
+- Comprehensive `parseISO` tests: date-only, datetime, UTC, offset, milliseconds
+- Comprehensive `parse` tests: various patterns, error cases, round-trip
+- Invalid input tests for `parseISO` (empty, partial, non-ISO strings)
+
+### Fixed
+
+- JSDoc example in `format()`: `MMM d` → `MMMMM d` to match "January" output (#1)
+
+### Changed
+
+- Consolidated `parse.test.ts` into `format.test.ts`
+- Switched coverage badge from repo file to Codecov
+- Removed `Update coverage badge` CI step (blocked by branch protection)
+- Bundled size: 1.79 KB → 1.89 KB (month name lookup tables)
+
 ## [0.1.0] - 2026-05-30
 
 ### Added
@@ -24,4 +45,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Vitest benchmarks vs date-fns and dayjs
 - Zero runtime dependencies
 
-[0.1.0]: https://github.com/your-org/date-light/releases/tag/v0.1.0
+[0.1.1]: https://github.com/flyingsquirrel0419/date-light/releases/tag/v0.1.1
+[0.1.0]: https://github.com/flyingsquirrel0419/date-light/releases/tag/v0.1.0

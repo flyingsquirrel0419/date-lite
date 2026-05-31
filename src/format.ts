@@ -72,7 +72,7 @@ const TOKEN_RE = new RegExp(`(${SORTED_TOKENS.join("|")})`, "g");
  * @example
  * format(new Date(2026, 0, 15), 'yyyy-MM-dd') // '2026-01-15'
  * format(new Date(2026, 0, 15, 14, 30), 'yyyy-MM-dd HH:mm') // '2026-01-15 14:30'
- * format(new Date(2026, 0, 15), 'EEEE, MMM d') // 'Thursday, January 15'
+ * format(new Date(2026, 0, 15), 'EEEE, MMMM d') // 'Thursday, January 15'
  */
 export function format(date: Date, pattern: string): string {
   return pattern.replace(TOKEN_RE, (token) => TOKENS[token](date));

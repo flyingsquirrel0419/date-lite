@@ -195,9 +195,29 @@ format(endOfMonth(date), "yyyy-MM-dd HH:mm");`,
 
 const app = document.querySelector<HTMLDivElement>("#app")!;
 let searchShortcutsBound = false;
+const appBasePath = import.meta.env.BASE_URL.replace(/\/$/, "");
+
+function appPath(path: Route | string): string {
+  if (path === "/") {
+    return `${appBasePath || "/"}`;
+  }
+  return `${appBasePath}${path}`;
+}
+
+function appAsset(path: string): string {
+  return `${appBasePath}${path}`;
+}
+
+function normalizeRoutePath(pathname: string): string {
+  const normalized = pathname.replace(/\/$/, "") || "/";
+  if (appBasePath && normalized.startsWith(appBasePath)) {
+    return normalized.slice(appBasePath.length).replace(/\/$/, "") || "/";
+  }
+  return normalized;
+}
 
 function routeFromLocation(): Route {
-  const path = window.location.pathname.replace(/\/$/, "") || "/";
+  const path = normalizeRoutePath(window.location.pathname);
   if (path === "/docs" || path === "/playground") {
     return path;
   }
@@ -207,7 +227,7 @@ function routeFromLocation(): Route {
 function shell(content: string, route: Route): string {
   return `
     <header class="topbar ${route === "/docs" ? "" : "topbar-compact"}">
-      <a class="brand" href="/" data-link aria-label="date-light home">
+      <a class="brand" href="${appPath("/")}" data-link aria-label="date-light home">
         <span class="sun-mark" aria-hidden="true"></span>
         <span>date-light</span>
       </a>
@@ -230,8 +250,8 @@ function shell(content: string, route: Route): string {
           : ""
       }
       <nav class="nav-links" aria-label="Primary navigation">
-        <a class="${route === "/docs" ? "active" : ""}" href="/docs" data-link>Docs</a>
-        <a class="${route === "/playground" ? "active" : ""}" href="/playground" data-link>Playground</a>
+        <a class="${route === "/docs" ? "active" : ""}" href="${appPath("/docs")}" data-link>Docs</a>
+        <a class="${route === "/playground" ? "active" : ""}" href="${appPath("/playground")}" data-link>Playground</a>
       </nav>
       <a class="github-link" href="https://github.com/flyingsquirrel0419/date-light" target="_blank" rel="noreferrer">
         GitHub
@@ -247,7 +267,7 @@ function renderLanding(): string {
       <main class="landing-page">
         <section class="hero-section" aria-labelledby="hero-title">
           <div class="ambient" aria-hidden="true">
-            <img src="/timefield.png" alt="" />
+            <img src="${appAsset("/timefield.png")}" alt="" />
           </div>
           <div class="hero-center">
             <div class="logo-lockup">
@@ -260,8 +280,8 @@ function renderLanding(): string {
               add, subtract, and snap date ranges in about 2.07KB minzipped.
             </p>
             <div class="hero-actions">
-              <a class="primary-button" href="/docs" data-link>Get Started</a>
-              <a class="secondary-button" href="/playground" data-link>Playground</a>
+              <a class="primary-button" href="${appPath("/docs")}" data-link>Get Started</a>
+              <a class="secondary-button" href="${appPath("/playground")}" data-link>Playground</a>
             </div>
             <div class="install-tabs" aria-label="Install date-light">
               <div class="package-tabs">
@@ -483,7 +503,8 @@ function render(route = routeFromLocation()) {
 }
 
 function navigate(path: string) {
-  window.history.pushState({}, "", path);
+  const url = new URL(path, window.location.origin);
+  window.history.pushState({}, "", `${url.pathname}${url.hash}`);
   render(routeFromLocation());
   if (!window.location.hash) {
     window.scrollTo({ top: 0, behavior: "instant" });
@@ -565,7 +586,7 @@ function bindSearch() {
         if (activeInput) {
           activeInput.focus();
         } else {
-          navigate("/docs");
+          navigate(appPath("/docs"));
         }
       }
     });
@@ -610,7 +631,7 @@ function bindSearch() {
         const id = button.dataset.docResult!;
         input.value = "";
         results.hidden = true;
-        navigate(`/docs#${id}`);
+        navigate(`${appPath("/docs")}#${id}`);
       });
     });
   }

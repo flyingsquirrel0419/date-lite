@@ -1,6 +1,6 @@
 {
   "name": "date-light",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Zero-dependency, ~1.8KB minzipped, fully typed date utility library — 39 functions covering the 20 most-used date-fns operations",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",

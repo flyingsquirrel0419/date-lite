@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.2] - 2026-06-03
+
+### Fixed
+
+- `differenceInHours`, `differenceInMinutes`, and `differenceInSeconds` now truncate partial units toward zero instead of rounding.
+- `parseISO()` now rejects invalid calendar dates instead of allowing JavaScript `Date` rollover.
+- `parseISO()` now preserves year `0000` for date-only strings instead of returning year 1900.
+- `parse()` now rejects invalid calendar dates, invalid times, non-numeric token input, and trailing input.
+
+### Added
+
+- Regression tests for partial difference truncation and strict parse validation edge cases.
+
 ## [0.1.1] - 2026-05-31
 
 ### Added
@@ -45,5 +58,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Vitest benchmarks vs date-fns and dayjs
 - Zero runtime dependencies
 
+[0.1.2]: https://github.com/flyingsquirrel0419/date-light/releases/tag/v0.1.2
 [0.1.1]: https://github.com/flyingsquirrel0419/date-light/releases/tag/v0.1.1
 [0.1.0]: https://github.com/flyingsquirrel0419/date-light/releases/tag/v0.1.0

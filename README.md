@@ -21,11 +21,11 @@ Zero dependencies. Full TypeScript types. Pure functions. date-fns compatible AP
 
 ## Features
 
-- **~2.07 KB minzipped** — 8x smaller than the same 20 functions from date-fns, 1.4x smaller than dayjs
+- **~2.07 KB minzipped** — 8.9x smaller than the same 20 functions from date-fns, 1.4x smaller than dayjs
 - **Zero dependencies** — no supply chain risk, no bloated `node_modules`
 - **Full TypeScript** — strict mode, complete type definitions, zero `any`
 - **date-fns compatible** — drop-in replacement for the functions you use most; same pattern syntax (`yyyy-MM-dd`)
-- **Blazing fast** — up to 17x faster than dayjs, up to 10x faster than date-fns on common operations
+- **Blazing fast** — up to 15x faster than dayjs, up to 72x faster than date-fns on common operations
 - **Pure & immutable** — every function returns a new `Date`, never mutates the input
 - **Tree-shakeable** — `sideEffects: false`, named exports only, import what you need
 
@@ -40,11 +40,11 @@ npm install date-light
 ```typescript
 import { format, addDays, differenceInDays, isBefore, startOfDay } from "date-light";
 
-const today = new Date();
+const today = new Date(2026, 4, 30, 14, 30, 45);
 
 format(today, "yyyy-MM-dd"); // '2026-05-30'
 format(today, "yyyy-MM-dd HH:mm:ss"); // '2026-05-30 14:30:45'
-format(today, "EEEE, MMM d"); // 'Friday, May 30'
+format(today, "EEEE, MMM d"); // 'Saturday, May 30'
 
 addDays(today, 7); // a week from now
 differenceInDays(addDays(today, 7), today); // 7
@@ -78,7 +78,7 @@ bun add date-light
 ### From source
 
 ```bash
-git clone https://github.com/your-org/date-light.git
+git clone https://github.com/flyingsquirrel0419/date-light.git
 cd date-light
 npm install
 npm run build
@@ -110,6 +110,8 @@ format(date, "EEEE, MMMM d"); // 'Thursday, January 15'
 | ------ | ------------------------ | ----------- |
 | `yyyy` | 4-digit year             | `2026`      |
 | `yy`   | 2-digit year             | `26`        |
+| `MMMM` | Full month name          | `January`   |
+| `MMM`  | Short month name         | `Jan`       |
 | `MM`   | Zero-padded month        | `01`-`12`   |
 | `M`    | Month                    | `1`-`12`    |
 | `dd`   | Zero-padded day          | `01`-`31`   |
@@ -212,12 +214,21 @@ getWeekOfYear(new Date(2026, 0, 1)); // 1 (ISO 8601 week number)
 ### Start / end of periods
 
 ```typescript
-import { startOfDay, endOfDay, startOfMonth, endOfMonth, startOfWeek } from "date-light";
+import {
+  startOfDay,
+  endOfDay,
+  startOfWeek,
+  endOfWeek,
+  startOfMonth,
+  endOfMonth,
+  startOfYear,
+  endOfYear,
+} from "date-light";
 
 const date = new Date(2026, 5, 30, 14, 30, 45);
 
-startOfDay(date); // Mon Jun 30 2026 00:00:00.000
-endOfDay(date); // Mon Jun 30 2026 23:59:59.999
+startOfDay(date); // Tue Jun 30 2026 00:00:00.000
+endOfDay(date); // Tue Jun 30 2026 23:59:59.999
 startOfWeek(date); // Mon Jun 29 2026 00:00:00.000 (ISO 8601 - Monday)
 endOfWeek(date); // Sun Jul 05 2026 23:59:59.999
 startOfMonth(date); // Mon Jun 01 2026 00:00:00.000
@@ -345,7 +356,7 @@ Performance on Node.js 24 — **nanoseconds per operation** (lower = faster), be
 | date-fns (20 functions) | 18.34 KB    | Just the 20 most-used functions    |
 | date-fns (full)         | 261.3 KB    | All 252 functions                  |
 
-> date-light is **10.5x smaller** than the same 20 date-fns functions and **1.7x smaller** than dayjs core.
+> date-light is **8.9x smaller** than the same 20 date-fns functions and **1.4x smaller** than dayjs core.
 
 ---
 
@@ -360,29 +371,30 @@ date-light uses the same pattern syntax as date-fns (`yyyy-MM-dd`), so most code
 
 ### Function mapping
 
-All 20 most-used date-fns functions are supported:
+Common date-fns functions supported include:
 
-| date-fns            | date-light           | Status   |
-| ------------------- | ------------------- | -------- |
-| `format`            | `format`            | Same API |
-| `parseISO`          | `parseISO`          | Same API |
-| `addDays`           | `addDays`           | Same API |
-| `addMonths`         | `addMonths`         | Same API |
-| `subDays`           | `subDays`           | Same API |
-| `differenceInDays`  | `differenceInDays`  | Same API |
-| `differenceInHours` | `differenceInHours` | Same API |
-| `isBefore`          | `isBefore`          | Same API |
-| `isAfter`           | `isAfter`           | Same API |
-| `isEqual`           | `isEqual`           | Same API |
-| `startOfDay`        | `startOfDay`        | Same API |
-| `endOfDay`          | `endOfDay`          | Same API |
-| `startOfMonth`      | `startOfMonth`      | Same API |
-| `endOfMonth`        | `endOfMonth`        | Same API |
-| `startOfWeek`       | `startOfWeek`       | Same API |
-| `isWeekend`         | `isWeekend`         | Same API |
-| `isLeapYear`        | `isLeapYear`        | Same API |
-| `getDaysInMonth`    | `getDaysInMonth`    | Same API |
-| `isValid`           | `isValid`           | Same API |
+| date-fns            | date-light           | Status                                     |
+| ------------------- | -------------------- | ------------------------------------------ |
+| `format`            | `format`             | Same API                                   |
+| `parseISO`          | `parseISO`           | Same API                                   |
+| `parse`             | `parse`              | Pattern-compatible (no reference date arg) |
+| `addDays`           | `addDays`            | Same API                                   |
+| `addMonths`         | `addMonths`          | Same API                                   |
+| `subDays`           | `subDays`            | Same API                                   |
+| `differenceInDays`  | `differenceInDays`   | Same API                                   |
+| `differenceInHours` | `differenceInHours`  | Same API                                   |
+| `isBefore`          | `isBefore`           | Same API                                   |
+| `isAfter`           | `isAfter`            | Same API                                   |
+| `isEqual`           | `isEqual`            | Same API                                   |
+| `startOfDay`        | `startOfDay`         | Same API                                   |
+| `endOfDay`          | `endOfDay`           | Same API                                   |
+| `startOfMonth`      | `startOfMonth`       | Same API                                   |
+| `endOfMonth`        | `endOfMonth`         | Same API                                   |
+| `startOfWeek`       | `startOfWeek`        | Same API                                   |
+| `isWeekend`         | `isWeekend`          | Same API                                   |
+| `isLeapYear`        | `isLeapYear`         | Same API                                   |
+| `getDaysInMonth`    | `getDaysInMonth`     | Same API                                   |
+| `isValid`           | `isValid`            | Same API                                   |
 
 ### Not supported (by design)
 
@@ -401,7 +413,7 @@ All 20 most-used date-fns functions are supported:
 ### Setup
 
 ```bash
-git clone https://github.com/your-org/date-light.git
+git clone https://github.com/flyingsquirrel0419/date-light.git
 cd date-light
 npm install
 ```

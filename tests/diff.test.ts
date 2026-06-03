@@ -34,6 +34,13 @@ describe("differenceInHours", () => {
     const b = new Date(2026, 0, 15, 10, 0);
     expect(differenceInHours(a, b)).toBe(4);
   });
+
+  it("truncates partial hours toward zero", () => {
+    const a = new Date(2026, 0, 15, 11, 59);
+    const b = new Date(2026, 0, 15, 10, 0);
+    expect(differenceInHours(a, b)).toBe(1);
+    expect(differenceInHours(b, a)).toBe(-1);
+  });
 });
 
 describe("differenceInMinutes", () => {
@@ -42,6 +49,13 @@ describe("differenceInMinutes", () => {
     const b = new Date(2026, 0, 15, 10, 0);
     expect(differenceInMinutes(a, b)).toBe(30);
   });
+
+  it("truncates partial minutes toward zero", () => {
+    const a = new Date(2026, 0, 15, 10, 1, 59);
+    const b = new Date(2026, 0, 15, 10, 0, 0);
+    expect(differenceInMinutes(a, b)).toBe(1);
+    expect(differenceInMinutes(b, a)).toBe(-1);
+  });
 });
 
 describe("differenceInSeconds", () => {
@@ -49,6 +63,13 @@ describe("differenceInSeconds", () => {
     const a = new Date(2026, 0, 15, 10, 0, 45);
     const b = new Date(2026, 0, 15, 10, 0, 0);
     expect(differenceInSeconds(a, b)).toBe(45);
+  });
+
+  it("truncates partial seconds toward zero", () => {
+    const a = new Date(2026, 0, 15, 10, 0, 1, 999);
+    const b = new Date(2026, 0, 15, 10, 0, 0, 0);
+    expect(differenceInSeconds(a, b)).toBe(1);
+    expect(differenceInSeconds(b, a)).toBe(-1);
   });
 });
 

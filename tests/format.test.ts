@@ -74,15 +74,13 @@ describe("parseISO — invalid inputs", () => {
     expect(() => parseISO("hello world")).toThrow(RangeError);
   });
 
-  it("handles Feb 30 (JS auto-rolls to March)", () => {
-    const d = parseISO("2026-02-30");
-    expect(d.getMonth()).toBe(2); // rolled to March
+  it("throws RangeError on invalid date-only value", () => {
+    expect(() => parseISO("2026-02-30")).toThrow(RangeError);
   });
 
-  it("parses year 0000 date-only string (2-digit year rollover)", () => {
-    // JS Date treats year 0 as 1900 in the constructor
+  it("parses year 0000 date-only string", () => {
     const d = parseISO("0000-01-15");
-    expect(d.getFullYear()).toBe(1900);
+    expect(d.getFullYear()).toBe(0);
     expect(d.getMonth()).toBe(0);
     expect(d.getDate()).toBe(15);
   });
@@ -90,6 +88,10 @@ describe("parseISO — invalid inputs", () => {
   it("throws RangeError on invalid full ISO datetime", () => {
     // This hits the isNaN guard in the full ISO path (line 38)
     expect(() => parseISO("2026-01-15T25:99:99")).toThrow(RangeError);
+  });
+
+  it("throws RangeError on invalid full ISO date component", () => {
+    expect(() => parseISO("2026-02-30T10:30:00")).toThrow(RangeError);
   });
 });
 
@@ -137,6 +139,22 @@ describe("parse — error cases", () => {
 
   it("throws RangeError on unexpected end of input", () => {
     expect(() => parse("2026-01", "yyyy-MM-dd")).toThrow(RangeError);
+  });
+
+  it("throws RangeError on invalid calendar date", () => {
+    expect(() => parse("2026-02-30", "yyyy-MM-dd")).toThrow(RangeError);
+  });
+
+  it("throws RangeError on invalid time", () => {
+    expect(() => parse("2026-01-15 25:00:00", "yyyy-MM-dd HH:mm:ss")).toThrow(RangeError);
+  });
+
+  it("throws RangeError on non-numeric token input", () => {
+    expect(() => parse("2026-aa-15", "yyyy-MM-dd")).toThrow(RangeError);
+  });
+
+  it("throws RangeError on trailing input", () => {
+    expect(() => parse("2026-01-15 extra", "yyyy-MM-dd")).toThrow(RangeError);
   });
 });
 

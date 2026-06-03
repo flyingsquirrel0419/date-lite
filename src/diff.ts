@@ -32,7 +32,7 @@ export function differenceInDays(dateLeft: Date, dateRight: Date): number {
  * @returns Number of full hours (positive if dateLeft > dateRight)
  */
 export function differenceInHours(dateLeft: Date, dateRight: Date): number {
-  return Math.round((dateLeft.getTime() - dateRight.getTime()) / MS_PER_HOUR);
+  return Math.trunc((dateLeft.getTime() - dateRight.getTime()) / MS_PER_HOUR);
 }
 
 /**
@@ -43,7 +43,7 @@ export function differenceInHours(dateLeft: Date, dateRight: Date): number {
  * @returns Number of full minutes (positive if dateLeft > dateRight)
  */
 export function differenceInMinutes(dateLeft: Date, dateRight: Date): number {
-  return Math.round((dateLeft.getTime() - dateRight.getTime()) / MS_PER_MINUTE);
+  return Math.trunc((dateLeft.getTime() - dateRight.getTime()) / MS_PER_MINUTE);
 }
 
 /**
@@ -54,7 +54,7 @@ export function differenceInMinutes(dateLeft: Date, dateRight: Date): number {
  * @returns Number of full seconds (positive if dateLeft > dateRight)
  */
 export function differenceInSeconds(dateLeft: Date, dateRight: Date): number {
-  return Math.round((dateLeft.getTime() - dateRight.getTime()) / MS_PER_SECOND);
+  return Math.trunc((dateLeft.getTime() - dateRight.getTime()) / MS_PER_SECOND);
 }
 
 /**

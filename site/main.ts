@@ -23,7 +23,6 @@ type PlaygroundPreset = {
   label: string;
   description: string;
   code: string;
-  run: () => string[];
 };
 
 const installCommands = {
@@ -96,12 +95,8 @@ const presets: PlaygroundPreset[] = [
 
 const date = new Date("2025-05-16T10:30:00");
 
-format(date, "yyyy-MM-dd HH:mm");
-format(date, "EEEE, MMMM d");`,
-    run: () => {
-      const date = new Date("2025-05-16T10:30:00");
-      return [format(date, "yyyy-MM-dd HH:mm"), format(date, "EEEE, MMMM d")];
-    },
+console.log(format(date, "yyyy-MM-dd HH:mm"));
+console.log(format(date, "EEEE, MMMM d"));`,
   },
   {
     id: "parse",
@@ -112,13 +107,8 @@ format(date, "EEEE, MMMM d");`,
 const iso = parseISO("2026-01-15");
 const custom = parse("2026-01-15 14:30", "yyyy-MM-dd HH:mm");
 
-format(iso, "yyyy-MM-dd");
-format(custom, "HH:mm");`,
-    run: () => {
-      const iso = parseISO("2026-01-15");
-      const custom = parse("2026-01-15 14:30", "yyyy-MM-dd HH:mm");
-      return [format(iso, "yyyy-MM-dd"), format(custom, "HH:mm")];
-    },
+console.log(format(iso, "yyyy-MM-dd"));
+console.log(format(custom, "HH:mm"));`,
   },
   {
     id: "calendar-math",
@@ -128,12 +118,8 @@ format(custom, "HH:mm");`,
 
 const start = new Date("2026-01-31T09:00:00");
 
-format(addDays(start, 7), "yyyy-MM-dd");
-format(addMonths(start, 1), "yyyy-MM-dd");`,
-    run: () => {
-      const start = new Date("2026-01-31T09:00:00");
-      return [format(addDays(start, 7), "yyyy-MM-dd"), format(addMonths(start, 1), "yyyy-MM-dd")];
-    },
+console.log(format(addDays(start, 7), "yyyy-MM-dd"));
+console.log(format(addMonths(start, 1), "yyyy-MM-dd"));`,
   },
   {
     id: "difference",
@@ -144,12 +130,7 @@ format(addMonths(start, 1), "yyyy-MM-dd");`,
 const release = new Date("2026-06-03T10:00:00");
 const beta = new Date("2026-05-16T10:30:00");
 
-differenceInDays(release, beta);`,
-    run: () => {
-      const release = new Date("2026-06-03T10:00:00");
-      const beta = new Date("2026-05-16T10:30:00");
-      return [String(differenceInDays(release, beta))];
-    },
+console.log(differenceInDays(release, beta));`,
   },
   {
     id: "query",
@@ -159,17 +140,9 @@ differenceInDays(release, beta);`,
 
 const date = new Date("2026-06-27T10:30:00");
 
-isWeekend(date);
-isLeapYear(new Date("2024-01-01"));
-getWeekOfYear(date);`,
-    run: () => {
-      const date = new Date("2026-06-27T10:30:00");
-      return [
-        `isWeekend: ${isWeekend(date)}`,
-        `isLeapYear(2024): ${isLeapYear(new Date("2024-01-01"))}`,
-        `week: ${getWeekOfYear(date)}`,
-      ];
-    },
+console.log("isWeekend:", isWeekend(date));
+console.log("isLeapYear(2024):", isLeapYear(new Date("2024-01-01")));
+console.log("week:", getWeekOfYear(date));`,
   },
   {
     id: "boundaries",
@@ -179,19 +152,27 @@ getWeekOfYear(date);`,
 
 const date = new Date("2026-06-30T14:30:00");
 
-format(startOfWeek(date), "yyyy-MM-dd HH:mm");
-format(startOfMonth(date), "yyyy-MM-dd HH:mm");
-format(endOfMonth(date), "yyyy-MM-dd HH:mm");`,
-    run: () => {
-      const date = new Date("2026-06-30T14:30:00");
-      return [
-        format(startOfWeek(date), "yyyy-MM-dd HH:mm"),
-        format(startOfMonth(date), "yyyy-MM-dd HH:mm"),
-        format(endOfMonth(date), "yyyy-MM-dd HH:mm"),
-      ];
-    },
+console.log(format(startOfWeek(date), "yyyy-MM-dd HH:mm"));
+console.log(format(startOfMonth(date), "yyyy-MM-dd HH:mm"));
+console.log(format(endOfMonth(date), "yyyy-MM-dd HH:mm"));`,
   },
 ];
+
+const playgroundRuntime = {
+  addDays,
+  addMonths,
+  differenceInDays,
+  endOfMonth,
+  format,
+  getDaysInMonth,
+  getWeekOfYear,
+  isLeapYear,
+  isWeekend,
+  parse,
+  parseISO,
+  startOfMonth,
+  startOfWeek,
+};
 
 const app = document.querySelector<HTMLDivElement>("#app")!;
 let searchShortcutsBound = false;
@@ -310,15 +291,15 @@ function renderLanding(): string {
           </div>
         </section>
         <section class="landing-strips" aria-label="Highlights">
-          <article>
+          <article class="tilt-card" data-tilt-card>
             <span>Zero dependencies</span>
             <p>No runtime dependency tree, no surprise transitive updates, no broad date stack.</p>
           </article>
-          <article>
+          <article class="tilt-card" data-tilt-card>
             <span>date-fns style</span>
             <p>Use familiar tokens like yyyy-MM-dd while importing only the common utilities.</p>
           </article>
-          <article>
+          <article class="tilt-card" data-tilt-card>
             <span>Typed by default</span>
             <p>Strict TypeScript source with side-effect-free ESM and CommonJS builds.</p>
           </article>
@@ -499,6 +480,7 @@ function render(route = routeFromLocation()) {
   bindNavigation();
   bindSearch();
   bindInstallCopy();
+  bindTiltCards();
   scrollToHash();
 }
 
@@ -656,10 +638,124 @@ function scrollToHash() {
   });
 }
 
+function bindTiltCards() {
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    return;
+  }
+
+  document.querySelectorAll<HTMLElement>("[data-tilt-card]").forEach((card) => {
+    card.addEventListener("pointermove", (event) => {
+      const rect = card.getBoundingClientRect();
+      const x = (event.clientX - rect.left) / rect.width - 0.5;
+      const y = (event.clientY - rect.top) / rect.height - 0.5;
+      card.style.setProperty("--tilt-x", `${(-y * 8).toFixed(2)}deg`);
+      card.style.setProperty("--tilt-y", `${(x * 10).toFixed(2)}deg`);
+      card.style.setProperty("--glow-x", `${((x + 0.5) * 100).toFixed(1)}%`);
+      card.style.setProperty("--glow-y", `${((y + 0.5) * 100).toFixed(1)}%`);
+    });
+
+    card.addEventListener("pointerleave", () => {
+      card.style.setProperty("--tilt-x", "0deg");
+      card.style.setProperty("--tilt-y", "0deg");
+      card.style.setProperty("--glow-x", "50%");
+      card.style.setProperty("--glow-y", "50%");
+    });
+  });
+}
+
+function preparePlaygroundCode(code: string): string {
+  const withoutImports = code
+    .split("\n")
+    .filter((line) => !line.trim().startsWith("import "))
+    .join("\n")
+    .trim();
+
+  if (!withoutImports) {
+    return "";
+  }
+
+  const lines = withoutImports.split("\n");
+  let lastIndex = -1;
+  for (let index = lines.length - 1; index >= 0; index--) {
+    const line = lines[index].trim();
+    if (line && !line.startsWith("//")) {
+      lastIndex = index;
+      break;
+    }
+  }
+  if (lastIndex === -1) {
+    return withoutImports;
+  }
+
+  const lastLine = lines[lastIndex].trim().replace(/;$/, "");
+  const isExpression =
+    !/^(const|let|var|if|for|while|switch|try|catch|finally|function|class|return|throw)\b/.test(
+      lastLine,
+    ) &&
+    !lastLine.includes("=") &&
+    !lastLine.startsWith("console.");
+
+  if (!isExpression) {
+    return withoutImports;
+  }
+
+  lines[lastIndex] = `__capture(${lastLine});`;
+  return lines.join("\n");
+}
+
+function formatPlaygroundValue(value: unknown): string {
+  if (value instanceof Date) {
+    return Number.isNaN(value.getTime()) ? "Invalid Date" : value.toISOString();
+  }
+
+  if (typeof value === "string") {
+    return value;
+  }
+
+  if (typeof value === "undefined") {
+    return "undefined";
+  }
+
+  try {
+    return JSON.stringify(value, null, 2);
+  } catch {
+    return String(value);
+  }
+}
+
+function runPlaygroundCode(code: string): string[] {
+  const logs: string[] = [];
+  const consoleProxy = {
+    log: (...values: unknown[]) => {
+      logs.push(values.map(formatPlaygroundValue).join(" "));
+    },
+  };
+  const capture = (value: unknown) => {
+    logs.push(formatPlaygroundValue(value));
+    return value;
+  };
+  const runtimeNames = Object.keys(playgroundRuntime);
+  const runtimeValues = Object.values(playgroundRuntime);
+  const preparedCode = preparePlaygroundCode(code);
+
+  if (!preparedCode) {
+    return ["No code to run."];
+  }
+
+  new Function(...runtimeNames, "console", "__capture", `"use strict";\n${preparedCode}`)(
+    ...runtimeValues,
+    consoleProxy,
+    capture,
+  );
+
+  return logs.length ? logs : ["No output. Add console.log(...) or leave an expression on the last line."];
+}
+
 function bindPlayground() {
   let active = presets[0];
   const status = document.querySelector<HTMLElement>("[data-status]")!;
   const output = document.querySelector<HTMLElement>("[data-output]")!;
+  const editor = document.querySelector<HTMLTextAreaElement>(".code-editor")!;
 
   document.querySelectorAll<HTMLButtonElement>("[data-preset]").forEach((button) => {
     button.addEventListener("click", () => {
@@ -674,7 +770,7 @@ function bindPlayground() {
   document.querySelector<HTMLButtonElement>("[data-run]")!.addEventListener("click", () => {
     try {
       status.textContent = "success";
-      output.textContent = active.run().map((line) => `> ${line}`).join("\n");
+      output.textContent = runPlaygroundCode(editor.value).map((line) => `> ${line}`).join("\n");
     } catch (error) {
       status.textContent = "error";
       output.textContent = error instanceof Error ? error.message : String(error);

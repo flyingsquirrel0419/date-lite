@@ -114,13 +114,30 @@ textarea {
 .search-control {
   position: relative;
   justify-content: space-between;
-  gap: 10px;
-  height: 40px;
-  padding: 0 12px;
-  border: 1px solid var(--line);
+  gap: 9px;
+  height: 42px;
+  padding: 0 8px 0 12px;
+  border: 1px solid rgba(255, 255, 255, 0.13);
   border-radius: 8px;
-  color: var(--muted);
-  background: rgba(255, 255, 255, 0.035);
+  color: #d7d6cf;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.025)),
+    rgba(11, 12, 14, 0.82);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 14px 40px rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(16px);
+}
+
+.search-control > span {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  color: var(--blue);
+  background: rgba(79, 140, 255, 0.12);
+  font-weight: 800;
 }
 
 .search-control input {
@@ -133,12 +150,14 @@ textarea {
 }
 
 .search-control input::placeholder {
-  color: var(--muted);
+  color: #8f928d;
 }
 
 .search-control:focus-within {
   border-color: rgba(79, 140, 255, 0.8);
-  box-shadow: 0 0 0 3px rgba(79, 140, 255, 0.14);
+  box-shadow:
+    0 0 0 3px rgba(79, 140, 255, 0.14),
+    0 18px 54px rgba(0, 0, 0, 0.36);
 }
 
 .search-results {
@@ -148,12 +167,15 @@ textarea {
   right: 0;
   z-index: 40;
   display: grid;
-  gap: 6px;
-  padding: 8px;
-  border: 1px solid var(--line);
+  gap: 4px;
+  padding: 7px;
+  border: 1px solid rgba(255, 255, 255, 0.13);
   border-radius: 8px;
-  background: rgba(18, 18, 20, 0.98);
-  box-shadow: var(--shadow);
+  background: rgba(17, 18, 20, 0.97);
+  box-shadow:
+    0 28px 80px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(18px);
 }
 
 .search-results[hidden] {
@@ -166,7 +188,7 @@ textarea {
   width: 100%;
   border: 0;
   border-radius: 7px;
-  padding: 10px 12px;
+  padding: 11px 12px;
   color: var(--text);
   background: transparent;
   text-align: left;
@@ -174,12 +196,14 @@ textarea {
 }
 
 .search-results button:hover {
-  background: rgba(79, 140, 255, 0.16);
+  background:
+    linear-gradient(90deg, rgba(79, 140, 255, 0.22), rgba(115, 221, 161, 0.08)),
+    rgba(255, 255, 255, 0.03);
 }
 
 .search-results small,
 .empty-search {
-  color: var(--dim);
+  color: #868983;
   font-size: 12px;
 }
 
@@ -188,11 +212,14 @@ textarea {
 }
 
 kbd {
-  padding: 3px 7px;
+  min-width: 54px;
+  padding: 4px 7px;
   border-radius: 6px;
-  color: var(--dim);
-  background: rgba(255, 255, 255, 0.06);
-  font-size: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  color: #9ca09a;
+  background: rgba(255, 255, 255, 0.055);
+  font-size: 11px;
+  text-align: center;
 }
 
 .nav-links {
@@ -473,23 +500,71 @@ pre {
 .landing-strips {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1px;
+  gap: 16px;
+  padding: 22px 32px 34px;
   border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
-  background: var(--line);
+  background: rgba(10, 10, 11, 0.78);
+  perspective: 1000px;
 }
 
 .landing-strips article {
-  padding: 30px 32px;
-  background: rgba(14, 14, 15, 0.96);
+  position: relative;
+  min-height: 156px;
+  padding: 28px 28px 30px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  background:
+    radial-gradient(
+      circle at var(--glow-x, 50%) var(--glow-y, 50%),
+      rgba(115, 221, 161, 0.14),
+      transparent 36%
+    ),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.02)),
+    rgba(18, 19, 20, 0.92);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.07),
+    0 18px 55px rgba(0, 0, 0, 0.28);
+  transform: rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+  transform-style: preserve-3d;
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 160ms ease;
+  will-change: transform;
+}
+
+.landing-strips article::after {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  content: "";
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), transparent 42%);
+  opacity: 0;
+  transition: opacity 180ms ease;
+}
+
+.landing-strips article:hover {
+  border-color: rgba(115, 221, 161, 0.36);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.09),
+    0 24px 70px rgba(0, 0, 0, 0.38);
+}
+
+.landing-strips article:hover::after {
+  opacity: 1;
 }
 
 .landing-strips span {
+  position: relative;
+  z-index: 1;
   color: var(--mint);
   font-weight: 760;
 }
 
 .landing-strips p {
+  position: relative;
+  z-index: 1;
   margin: 12px 0 0;
   color: var(--muted);
   line-height: 1.56;

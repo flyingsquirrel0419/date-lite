@@ -20,16 +20,16 @@ export function parseISO(dateStr: string): Date {
     throw new RangeError(`Invalid ISO date string: ${dateStr}`);
   }
 
+  const [y, m, d] = dateStr.slice(0, 10).split("-").map(Number);
+  if (!isValidDateParts(y, m - 1, d, 0, 0, 0, 0)) {
+    throw new RangeError(`Invalid ISO date string: ${dateStr}`);
+  }
+
   // date-only strings: parse as local midnight (date-fns compatible)
   // ECMAScript spec parses date-only ISO as UTC, but date-fns intentionally
   // interprets them as local time for usability.
   if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
-    const [y, m, d] = dateStr.split("-").map(Number);
-    const date = new Date(y, m - 1, d);
-    if (isNaN(date.getTime())) {
-      throw new RangeError(`Invalid ISO date string: ${dateStr}`);
-    }
-    return date;
+    return createLocalDate(y, m - 1, d, 0, 0, 0, 0);
   }
 
   const date = new Date(dateStr);
@@ -53,6 +53,42 @@ const PARSE_TOKEN_PATTERNS: Record<string, (s: string) => number> = {
 
 const PARSE_TOKENS_SORTED = Object.keys(PARSE_TOKEN_PATTERNS).sort((a, b) => b.length - a.length);
 const PARSE_TOKEN_RE = new RegExp(`(${PARSE_TOKENS_SORTED.join("|")})`, "g");
+
+function createLocalDate(
+  year: number,
+  month: number,
+  day: number,
+  hours: number,
+  minutes: number,
+  seconds: number,
+  ms: number,
+): Date {
+  const date = new Date(0);
+  date.setFullYear(year, month, day);
+  date.setHours(hours, minutes, seconds, ms);
+  return date;
+}
+
+function isValidDateParts(
+  year: number,
+  month: number,
+  day: number,
+  hours: number,
+  minutes: number,
+  seconds: number,
+  ms: number,
+): boolean {
+  const date = createLocalDate(year, month, day, hours, minutes, seconds, ms);
+  return (
+    date.getFullYear() === year &&
+    date.getMonth() === month &&
+    date.getDate() === day &&
+    date.getHours() === hours &&
+    date.getMinutes() === minutes &&
+    date.getSeconds() === seconds &&
+    date.getMilliseconds() === ms
+  );
+}
 
 /**
  * Parse a date string according to a pattern.
@@ -109,9 +145,16 @@ export function parse(dateStr: string, pattern: string): Date {
       if (valueStr.length !== len) {
         throw new RangeError(`Unexpected end of input at position ${si}`);
       }
+      if (!/^\d+$/.test(valueStr)) {
+        throw new RangeError(`Invalid ${seg.token} at position ${si}: ${valueStr}`);
+      }
       values[seg.token] = PARSE_TOKEN_PATTERNS[seg.token](valueStr);
       si += len;
     }
+  }
+
+  if (si !== dateStr.length) {
+    throw new RangeError(`Unexpected trailing input at position ${si}`);
   }
 
   const year = values["yyyy"] ?? 1970;
@@ -122,5 +165,9 @@ export function parse(dateStr: string, pattern: string): Date {
   const seconds = values["ss"] ?? 0;
   const ms = values["SSS"] ?? 0;
 
-  return new Date(year, month, day, hours, minutes, seconds, ms);
+  if (!isValidDateParts(year, month, day, hours, minutes, seconds, ms)) {
+    throw new RangeError(`Invalid date string: ${dateStr}`);
+  }
+
+  return createLocalDate(year, month, day, hours, minutes, seconds, ms);
 }

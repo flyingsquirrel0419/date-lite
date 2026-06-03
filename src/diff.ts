@@ -5,6 +5,10 @@ const MS_PER_MINUTE = 60000;
 const MS_PER_HOUR = 3600000;
 const MS_PER_DAY = 86400000;
 
+function trunc(value: number): number {
+  return value < 0 ? Math.ceil(value) : Math.floor(value);
+}
+
 /**
  * Get the number of full calendar days between two dates.
  *
@@ -32,7 +36,7 @@ export function differenceInDays(dateLeft: Date, dateRight: Date): number {
  * @returns Number of full hours (positive if dateLeft > dateRight)
  */
 export function differenceInHours(dateLeft: Date, dateRight: Date): number {
-  return Math.round((dateLeft.getTime() - dateRight.getTime()) / MS_PER_HOUR);
+  return trunc((dateLeft.getTime() - dateRight.getTime()) / MS_PER_HOUR);
 }
 
 /**
@@ -43,7 +47,7 @@ export function differenceInHours(dateLeft: Date, dateRight: Date): number {
  * @returns Number of full minutes (positive if dateLeft > dateRight)
  */
 export function differenceInMinutes(dateLeft: Date, dateRight: Date): number {
-  return Math.round((dateLeft.getTime() - dateRight.getTime()) / MS_PER_MINUTE);
+  return trunc((dateLeft.getTime() - dateRight.getTime()) / MS_PER_MINUTE);
 }
 
 /**
@@ -54,7 +58,7 @@ export function differenceInMinutes(dateLeft: Date, dateRight: Date): number {
  * @returns Number of full seconds (positive if dateLeft > dateRight)
  */
 export function differenceInSeconds(dateLeft: Date, dateRight: Date): number {
-  return Math.round((dateLeft.getTime() - dateRight.getTime()) / MS_PER_SECOND);
+  return trunc((dateLeft.getTime() - dateRight.getTime()) / MS_PER_SECOND);
 }
 
 /**

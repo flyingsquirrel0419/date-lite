@@ -54,6 +54,18 @@ const PARSE_TOKEN_PATTERNS: Record<string, (s: string) => number> = {
 const PARSE_TOKENS_SORTED = Object.keys(PARSE_TOKEN_PATTERNS).sort((a, b) => b.length - a.length);
 const PARSE_TOKEN_RE = new RegExp(`(${PARSE_TOKENS_SORTED.join("|")})`, "g");
 
+/**
+ * Create a local Date while preserving years 0-99 exactly.
+ *
+ * @param year - Full year value, including 0-99 without 1900 offset
+ * @param month - Zero-based month
+ * @param day - Day of month
+ * @param hours - Hours
+ * @param minutes - Minutes
+ * @param seconds - Seconds
+ * @param ms - Milliseconds
+ * @returns A local Date with the provided components
+ */
 function createLocalDate(
   year: number,
   month: number,
@@ -69,6 +81,18 @@ function createLocalDate(
   return date;
 }
 
+/**
+ * Check whether date/time components round-trip without Date auto-rollover.
+ *
+ * @param year - Full year value
+ * @param month - Zero-based month
+ * @param day - Day of month
+ * @param hours - Hours
+ * @param minutes - Minutes
+ * @param seconds - Seconds
+ * @param ms - Milliseconds
+ * @returns `true` when the components describe a valid local date/time
+ */
 function isValidDateParts(
   year: number,
   month: number,

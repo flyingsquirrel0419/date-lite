@@ -9,7 +9,7 @@
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![TypeScript](https://img.shields.io/badge/TypeScript-6.0-3178c6.svg)](https://www.typescriptlang.org/)
 
-**The 20 date-fns functions you actually use — in 1.75 KB.**
+**The 20 date-fns functions you actually use — in 2.07 KB.**
 
 Zero dependencies. Full TypeScript types. Pure functions. date-fns compatible API.
 
@@ -21,7 +21,7 @@ Zero dependencies. Full TypeScript types. Pure functions. date-fns compatible AP
 
 ## Features
 
-- **~1.75 KB minzipped** — 10x smaller than the same 20 functions from date-fns, 1.7x smaller than dayjs
+- **~2.07 KB minzipped** — 8x smaller than the same 20 functions from date-fns, 1.4x smaller than dayjs
 - **Zero dependencies** — no supply chain risk, no bloated `node_modules`
 - **Full TypeScript** — strict mode, complete type definitions, zero `any`
 - **date-fns compatible** — drop-in replacement for the functions you use most; same pattern syntax (`yyyy-MM-dd`)
@@ -340,7 +340,7 @@ Performance on Node.js 24 — **nanoseconds per operation** (lower = faster), be
 
 | Library                 | minzipped   | Note                               |
 | ----------------------- | ----------- | ---------------------------------- |
-| **date-light**           | **1.75 KB** | 39 functions, fully tree-shakeable |
+| **date-light**           | **2.07 KB** | 39 functions, fully tree-shakeable |
 | dayjs                   | 2.97 KB     | Core only (plugins add more)       |
 | date-fns (20 functions) | 18.34 KB    | Just the 20 most-used functions    |
 | date-fns (full)         | 261.3 KB    | All 252 functions                  |
@@ -392,7 +392,7 @@ All 20 most-used date-fns functions are supported:
 | Timezone conversion | Requires full TZ database             | `Temporal` API or `luxon`       |
 | Interval / Duration | Niche use case                        | Compose from existing functions |
 | Chaining API        | Mutable patterns, hidden side effects | Function composition            |
-| Plugin system       | Over-engineering for 1.75 KB          | Import individual functions     |
+| Plugin system       | Over-engineering for 2.07 KB          | Import individual functions     |
 
 ---
 

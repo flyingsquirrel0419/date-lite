@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" role="img" aria-labelledby="title desc">
+  <title id="title">date-light mark</title>
+  <desc id="desc">A compact calendar mark with a rising light and timeline arc.</desc>
+  <defs>
+    <linearGradient id="mark-bg" x1="18" y1="14" x2="78" y2="86" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#172033"/>
+      <stop offset="1" stop-color="#0b0b0c"/>
+    </linearGradient>
+    <linearGradient id="mark-ring" x1="14" y1="12" x2="82" y2="84" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#4f8cff"/>
+      <stop offset="0.48" stop-color="#73dda1"/>
+      <stop offset="1" stop-color="#f1bd69"/>
+    </linearGradient>
+    <filter id="soft-glow" x="-30%" y="-30%" width="160%" height="160%" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="3.2" result="blur"/>
+      <feColorMatrix in="blur" type="matrix" values="0 0 0 0 0.310 0 0 0 0 0.549 0 0 0 0 1 0 0 0 0.46 0"/>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <rect width="96" height="96" rx="24" fill="url(#mark-bg)"/>
+  <path
+    d="M24 22h48c6.6 0 12 5.4 12 12v38c0 6.6-5.4 12-12 12H24c-6.6 0-12-5.4-12-12V34c0-6.6 5.4-12 12-12Z"
+    fill="#121318"
+    stroke="url(#mark-ring)"
+    stroke-width="4"
+  />
+  <path d="M26 16v14M70 16v14" stroke="#f4f2ec" stroke-width="6" stroke-linecap="round"/>
+  <path d="M14 40h68" stroke="#2a2b30" stroke-width="4"/>
+  <path d="M25 65c8.8-13.6 18.4-20.4 28.8-20.4 7.4 0 13.4 3.6 18.2 10.8" fill="none" stroke="#73dda1" stroke-width="5" stroke-linecap="round"/>
+  <path d="M37 64h22" stroke="#f1bd69" stroke-width="6" stroke-linecap="round" filter="url(#soft-glow)"/>
+  <circle cx="61" cy="56" r="6" fill="#f1bd69" filter="url(#soft-glow)"/>
+  <path d="M28 51h12M28 73h8M63 73h8" stroke="#4f8cff" stroke-width="4" stroke-linecap="round"/>
+</svg>

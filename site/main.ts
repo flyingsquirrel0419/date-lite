@@ -209,7 +209,7 @@ function shell(content: string, route: Route): string {
   return `
     <header class="topbar ${route === "/docs" ? "" : "topbar-compact"}">
       <a class="brand" href="${appPath("/")}" data-link aria-label="date-light home">
-        <span class="sun-mark" aria-hidden="true"></span>
+        <img class="brand-mark" src="${appAsset("/date-light-mark.svg")}" alt="" />
         <span>date-light</span>
       </a>
       ${
@@ -252,7 +252,7 @@ function renderLanding(): string {
           </div>
           <div class="hero-center">
             <div class="logo-lockup">
-              <span class="hero-symbol" aria-hidden="true"></span>
+              <img class="hero-mark" src="${appAsset("/date-light-mark.svg")}" alt="" />
               <span>date-light</span>
             </div>
             <h1 id="hero-title">The date toolkit you actually ship</h1>

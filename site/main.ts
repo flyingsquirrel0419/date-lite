@@ -1,18 +1,4 @@
-import {
-  addDays,
-  addMonths,
-  differenceInDays,
-  endOfMonth,
-  format,
-  getDaysInMonth,
-  getWeekOfYear,
-  isLeapYear,
-  isWeekend,
-  parse,
-  parseISO,
-  startOfMonth,
-  startOfWeek,
-} from "../src";
+import * as dateLight from "../src";
 
 import "./styles.css";
 
@@ -158,21 +144,7 @@ console.log(format(endOfMonth(date), "yyyy-MM-dd HH:mm"));`,
   },
 ];
 
-const playgroundRuntime = {
-  addDays,
-  addMonths,
-  differenceInDays,
-  endOfMonth,
-  format,
-  getDaysInMonth,
-  getWeekOfYear,
-  isLeapYear,
-  isWeekend,
-  parse,
-  parseISO,
-  startOfMonth,
-  startOfWeek,
-};
+const playgroundRuntime: Record<string, unknown> = dateLight;
 
 const app = document.querySelector<HTMLDivElement>("#app")!;
 let searchShortcutsBound = false;
@@ -740,15 +712,70 @@ function bindTiltCards() {
   });
 }
 
-function preparePlaygroundCode(code: string): string {
-  const withoutImports = code
-    .split("\n")
-    .filter((line) => !line.trim().startsWith("import "))
-    .join("\n")
-    .trim();
+type PreparedPlaygroundCode = {
+  code: string;
+  names: string[];
+  values: unknown[];
+};
+
+function parseImportSpecifiers(specifierSource: string): Array<[string, string]> {
+  return specifierSource
+    .split(",")
+    .map((part) => part.trim())
+    .filter(Boolean)
+    .map((part) => {
+      const aliasMatch = part.match(/^([A-Za-z_$][\w$]*)\s+as\s+([A-Za-z_$][\w$]*)$/);
+      if (aliasMatch) {
+        return [aliasMatch[1], aliasMatch[2]];
+      }
+
+      if (!/^[A-Za-z_$][\w$]*$/.test(part)) {
+        throw new SyntaxError(`Unsupported import specifier "${part}".`);
+      }
+
+      return [part, part];
+    });
+}
+
+function preparePlaygroundCode(code: string): PreparedPlaygroundCode {
+  const names: string[] = [];
+  const values: unknown[] = [];
+  const importPattern =
+    /import\s+(?:(\{[\s\S]*?\})|([A-Za-z_$][\w$]*)|\*\s+as\s+([A-Za-z_$][\w$]*))\s+from\s+["']([^"']+)["'];?/g;
+
+  let executableCode = code.replace(
+    importPattern,
+    (_match, namedImport: string | undefined, defaultImport: string | undefined, namespaceImport: string | undefined, source: string) => {
+      if (source !== "date-light") {
+        throw new TypeError(`Only imports from "date-light" can run in the playground.`);
+      }
+
+      if (defaultImport || namespaceImport || !namedImport) {
+        throw new SyntaxError(`Use named imports from "date-light", for example: import { format } from "date-light";`);
+      }
+
+      parseImportSpecifiers(namedImport.slice(1, -1)).forEach(([exportName, localName]) => {
+        if (!(exportName in playgroundRuntime)) {
+          throw new ReferenceError(`date-light does not export "${exportName}".`);
+        }
+
+        names.push(localName);
+        values.push(playgroundRuntime[exportName as keyof typeof playgroundRuntime]);
+      });
+
+      return "";
+    },
+  );
+
+  const leftoverImport = executableCode.match(/^\s*import\s.+$/m);
+  if (leftoverImport) {
+    throw new SyntaxError(`Unsupported import syntax: ${leftoverImport[0].trim()}`);
+  }
+
+  const withoutImports = executableCode.trim();
 
   if (!withoutImports) {
-    return "";
+    return { code: "", names, values };
   }
 
   const lines = withoutImports.split("\n");
@@ -773,11 +800,11 @@ function preparePlaygroundCode(code: string): string {
     !lastLine.startsWith("console.");
 
   if (!isExpression) {
-    return withoutImports;
+    return { code: withoutImports, names, values };
   }
 
   lines[lastIndex] = `__capture(${lastLine});`;
-  return lines.join("\n");
+  return { code: lines.join("\n"), names, values };
 }
 
 function formatPlaygroundValue(value: unknown): string {
@@ -811,21 +838,27 @@ function runPlaygroundCode(code: string): string[] {
     logs.push(formatPlaygroundValue(value));
     return value;
   };
-  const runtimeNames = Object.keys(playgroundRuntime);
-  const runtimeValues = Object.values(playgroundRuntime);
   const preparedCode = preparePlaygroundCode(code);
 
-  if (!preparedCode) {
+  if (!preparedCode.code) {
     return ["No code to run."];
   }
 
-  new Function(...runtimeNames, "console", "__capture", `"use strict";\n${preparedCode}`)(
-    ...runtimeValues,
+  new Function(...preparedCode.names, "console", "__capture", `"use strict";\n${preparedCode.code}`)(
+    ...preparedCode.values,
     consoleProxy,
     capture,
   );
 
   return logs.length ? logs : ["No output. Add console.log(...) or leave an expression on the last line."];
+}
+
+function formatPlaygroundError(error: unknown): string {
+  if (error instanceof Error) {
+    return `${error.name}: ${error.message}`;
+  }
+
+  return String(error);
 }
 
 function bindPlayground() {
@@ -860,7 +893,7 @@ function bindPlayground() {
       output.textContent = runPlaygroundCode(editor.value).map((line) => `> ${line}`).join("\n");
     } catch (error) {
       status.textContent = "error";
-      output.textContent = error instanceof Error ? error.message : String(error);
+      output.textContent = formatPlaygroundError(error);
     }
   });
 }

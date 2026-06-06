@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">date-light social preview</title>
+  <desc id="desc">A preview card for date-light with a timefield background, logo, and project summary.</desc>
+  <defs>
+    <linearGradient id="fade" x1="0" x2="1" y1="0" y2="0">
+      <stop offset="0" stop-color="#0b0b0c" stop-opacity="0.88"/>
+      <stop offset="0.5" stop-color="#0b0b0c" stop-opacity="0.52"/>
+      <stop offset="1" stop-color="#0b0b0c" stop-opacity="0.08"/>
+    </linearGradient>
+    <linearGradient id="bottom-fade" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#0b0b0c" stop-opacity="0"/>
+      <stop offset="1" stop-color="#0b0b0c" stop-opacity="0.58"/>
+    </linearGradient>
+    <filter id="text-shadow" x="-10%" y="-20%" width="130%" height="150%" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000000" flood-opacity="0.55"/>
+    </filter>
+    <filter id="mark-shadow" x="-40%" y="-40%" width="180%" height="180%" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="18" stdDeviation="20" flood-color="#000000" flood-opacity="0.55"/>
+      <feDropShadow dx="0" dy="0" stdDeviation="16" flood-color="#4f8cff" flood-opacity="0.28"/>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="630" fill="#0b0b0c"/>
+  <image href="timefield.png" x="-30" y="-22" width="1260" height="709" preserveAspectRatio="xMidYMid slice"/>
+  <rect width="1200" height="630" fill="url(#fade)"/>
+  <rect width="1200" height="630" fill="url(#bottom-fade)"/>
+
+  <g filter="url(#text-shadow)">
+    <g transform="translate(86 86)">
+      <image href="date-light-mark.svg" width="82" height="82" filter="url(#mark-shadow)"/>
+      <text x="106" y="57" fill="#f4f2ec" font-family="Arial, Helvetica, sans-serif" font-size="54" font-weight="800">date-light</text>
+    </g>
+
+    <text x="86" y="263" fill="#f4f2ec" font-family="Arial, Helvetica, sans-serif" font-size="72" font-weight="900">Tiny date utilities</text>
+    <text x="86" y="343" fill="#f4f2ec" font-family="Arial, Helvetica, sans-serif" font-size="72" font-weight="900">for JavaScript</text>
+
+    <text x="90" y="424" fill="#d7d4ca" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="600">Zero dependencies. Fully typed. 39 functions.</text>
+    <text x="90" y="477" fill="#d7d4ca" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="600">About 2.07KB minzipped.</text>
+  </g>
+
+  <g transform="translate(86 536)">
+    <rect width="258" height="52" rx="14" fill="#151516" fill-opacity="0.84" stroke="#2a2b30"/>
+    <text x="26" y="35" fill="#73dda1" font-family="Arial, Helvetica, sans-serif" font-size="23" font-weight="700">npm install date-light</text>
+  </g>
+</svg>

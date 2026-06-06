@@ -990,6 +990,22 @@ pre {
   background:
     linear-gradient(180deg, rgba(115, 221, 161, 0.035), transparent 45%),
     rgba(5, 7, 8, 0.58);
+  transition:
+    background 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.output-console[data-state="error"] {
+  background:
+    linear-gradient(180deg, rgba(255, 104, 96, 0.11), transparent 52%),
+    rgba(14, 5, 6, 0.66);
+  box-shadow: inset 0 1px 0 rgba(255, 104, 96, 0.08);
+}
+
+.output-console[data-state="success"] {
+  background:
+    linear-gradient(180deg, rgba(115, 221, 161, 0.075), transparent 48%),
+    rgba(5, 7, 8, 0.58);
 }
 
 .output-console > div {
@@ -1004,6 +1020,16 @@ pre {
   min-height: 96px;
   padding: 22px;
   color: var(--mint);
+  transition: color 180ms ease;
+}
+
+.output-console[data-state="error"] pre {
+  color: #ff8b84;
+}
+
+.output-console[data-state="error"] span,
+.terminal-status[data-state="error"] {
+  color: #ff8b84;
 }
 
 @keyframes spin {

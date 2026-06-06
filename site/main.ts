@@ -451,7 +451,7 @@ function renderPlayground(activeId = "format"): string {
                 <span></span>
               </div>
               <span class="terminal-title">date-light playground</span>
-              <span class="terminal-status" data-status>idle</span>
+              <span class="terminal-status" data-status data-state="idle">idle</span>
             </div>
             <div class="terminal-pane terminal-editor">
               <div class="terminal-prompt" aria-hidden="true">
@@ -460,7 +460,7 @@ function renderPlayground(activeId = "format"): string {
               </div>
               <textarea class="code-editor" spellcheck="false" aria-label="TypeScript editor">${active.code}</textarea>
             </div>
-            <div class="terminal-pane output-console">
+            <div class="terminal-pane output-console" data-output-console data-state="idle">
               <div>
                 <strong>Output</strong>
                 <span>console</span>
@@ -867,6 +867,7 @@ function bindPlayground() {
     presets.find((preset) => document.querySelector(`[data-preset="${preset.id}"].active`)) ?? presets[0];
   const status = document.querySelector<HTMLElement>("[data-status]")!;
   const output = document.querySelector<HTMLElement>("[data-output]")!;
+  const outputConsole = document.querySelector<HTMLElement>("[data-output-console]")!;
   const editor = document.querySelector<HTMLTextAreaElement>(".code-editor")!;
   const description = document.querySelector<HTMLElement>("[data-preset-description]")!;
 
@@ -879,7 +880,9 @@ function bindPlayground() {
       description.textContent = active.description;
       editor.value = active.code;
       status.textContent = "idle";
+      status.dataset.state = "idle";
       output.textContent = "Click Run to execute this preset.";
+      outputConsole.dataset.state = "idle";
       const tabs = button.closest<HTMLElement>("[data-liquid-tabs]");
       if (tabs) {
         updateLiquidTabs(tabs);
@@ -890,10 +893,14 @@ function bindPlayground() {
   document.querySelector<HTMLButtonElement>("[data-run]")!.addEventListener("click", () => {
     try {
       status.textContent = "success";
+      status.dataset.state = "success";
       output.textContent = runPlaygroundCode(editor.value).map((line) => `> ${line}`).join("\n");
+      outputConsole.dataset.state = "success";
     } catch (error) {
       status.textContent = "error";
+      status.dataset.state = "error";
       output.textContent = formatPlaygroundError(error);
+      outputConsole.dataset.state = "error";
     }
   });
 }

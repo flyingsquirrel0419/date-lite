@@ -280,14 +280,29 @@ function renderLanding(): string {
                   )
                   .join("")}
               </div>
-              <div class="install-command">
-                <pre><code data-install-command>${installCommands.npm}</code></pre>
-                <button type="button" class="copy-command" data-copy-install aria-label="Copy install command">
-                  <svg aria-hidden="true" viewBox="0 0 24 24">
-                    <rect x="8" y="8" width="11" height="11" rx="2"></rect>
-                    <rect x="5" y="5" width="11" height="11" rx="2"></rect>
-                  </svg>
-                </button>
+              <div class="install-terminal">
+                <div class="terminal-hostbar">
+                  <div class="terminal-lights" aria-hidden="true">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                  </div>
+                  <span class="terminal-title">install date-light</span>
+                  <span class="terminal-status">localhost</span>
+                </div>
+                <div class="install-command">
+                  <div class="install-prompt" aria-hidden="true">
+                    <span>~/project</span>
+                    <strong>$</strong>
+                  </div>
+                  <pre><code data-install-command>${installCommands.npm}</code></pre>
+                  <button type="button" class="copy-command" data-copy-install aria-label="Copy install command">
+                    <svg aria-hidden="true" viewBox="0 0 24 24">
+                      <rect x="8" y="8" width="11" height="11" rx="2"></rect>
+                      <rect x="5" y="5" width="11" height="11" rx="2"></rect>
+                    </svg>
+                  </button>
+                </div>
               </div>
             </div>
           </div>

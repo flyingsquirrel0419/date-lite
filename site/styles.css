@@ -487,17 +487,48 @@ pre {
   line-height: 1.72;
 }
 
+.install-terminal {
+  margin: 14px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.07), transparent 34%),
+    rgba(7, 8, 10, 0.74);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 18px 48px rgba(0, 0, 0, 0.26);
+}
+
 .install-command {
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: auto minmax(0, 1fr) auto;
   gap: 12px;
   align-items: center;
-  padding: 16px;
+  padding: 16px 18px;
+  background:
+    linear-gradient(90deg, rgba(115, 221, 161, 0.06), transparent 48%),
+    rgba(5, 7, 8, 0.56);
+}
+
+.install-prompt {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  color: var(--dim);
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.install-prompt strong {
+  color: var(--mint);
+  font-weight: 800;
 }
 
 .install-command pre {
   min-width: 0;
-  padding: 0 4px;
+  padding: 0;
   text-align: left;
   color: var(--mint);
 }
@@ -1071,14 +1102,17 @@ pre {
   }
 
   .hero-actions,
-  .runner-toolbar,
-  .install-command {
+  .runner-toolbar {
     align-items: stretch;
     flex-direction: column;
   }
 
   .install-command {
-    display: flex;
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .install-prompt {
+    grid-column: 1 / -1;
   }
 
   .landing-strips,

@@ -176,6 +176,7 @@ const playgroundRuntime = {
 
 const app = document.querySelector<HTMLDivElement>("#app")!;
 let searchShortcutsBound = false;
+let liquidTabsResizeBound = false;
 const appBasePath = import.meta.env.BASE_URL.replace(/\/$/, "");
 
 function appPath(path: Route | string): string {
@@ -265,7 +266,8 @@ function renderLanding(): string {
               <a class="secondary-button" href="${appPath("/playground")}" data-link>Playground</a>
             </div>
             <div class="install-tabs" aria-label="Install date-light">
-              <div class="package-tabs">
+              <div class="package-tabs" data-liquid-tabs>
+                <span class="liquid-indicator" aria-hidden="true"></span>
                 ${Object.keys(installCommands)
                   .map(
                     (manager) => `
@@ -433,7 +435,8 @@ function renderPlayground(activeId = "format"): string {
           <p>Choose a preset, inspect the TypeScript call, then run it against the local date-light source.</p>
         </section>
         <section class="runner-shell">
-          <div class="preset-tabs" role="tablist" aria-label="Playground presets">
+          <div class="preset-tabs" role="tablist" aria-label="Playground presets" data-liquid-tabs>
+            <span class="liquid-indicator" aria-hidden="true"></span>
             ${presets
               .map(
                 (preset) => `
@@ -449,7 +452,7 @@ function renderPlayground(activeId = "format"): string {
           <div class="runner-toolbar">
             <div>
               <strong>Editor</strong>
-              <span>${active.description}</span>
+              <span data-preset-description>${active.description}</span>
             </div>
             <button class="run-button" type="button" data-run>Run</button>
           </div>
@@ -480,6 +483,7 @@ function render(route = routeFromLocation()) {
   bindNavigation();
   bindSearch();
   bindInstallCopy();
+  bindLiquidTabs();
   bindTiltCards();
   scrollToHash();
 }
@@ -502,6 +506,43 @@ function bindNavigation() {
   });
 }
 
+function updateLiquidTabs(container: HTMLElement) {
+  const active = container.querySelector<HTMLElement>("button.active");
+  const indicator = container.querySelector<HTMLElement>(".liquid-indicator");
+  if (!active || !indicator) {
+    return;
+  }
+
+  const containerRect = container.getBoundingClientRect();
+  const activeRect = active.getBoundingClientRect();
+  const isReady = container.dataset.liquidReady === "true";
+  container.style.setProperty("--liquid-x", `${activeRect.left - containerRect.left}px`);
+  container.style.setProperty("--liquid-y", `${activeRect.top - containerRect.top}px`);
+  container.style.setProperty("--liquid-w", `${activeRect.width}px`);
+  container.style.setProperty("--liquid-h", `${activeRect.height}px`);
+
+  if (!isReady) {
+    window.requestAnimationFrame(() => {
+      container.dataset.liquidReady = "true";
+    });
+  }
+}
+
+function bindLiquidTabs() {
+  const containers = [...document.querySelectorAll<HTMLElement>("[data-liquid-tabs]")];
+  containers.forEach(updateLiquidTabs);
+  window.requestAnimationFrame(() => containers.forEach(updateLiquidTabs));
+
+  if (!liquidTabsResizeBound) {
+    liquidTabsResizeBound = true;
+    window.addEventListener("resize", () => {
+      window.requestAnimationFrame(() => {
+        document.querySelectorAll<HTMLElement>("[data-liquid-tabs]").forEach(updateLiquidTabs);
+      });
+    });
+  }
+}
+
 function bindInstallCopy() {
   const command = document.querySelector<HTMLElement>("[data-install-command]");
   const copyButton = document.querySelector<HTMLButtonElement>("[data-copy-install]");
@@ -516,6 +557,10 @@ function bindInstallCopy() {
       document
         .querySelectorAll<HTMLButtonElement>("[data-package-manager]")
         .forEach((item) => item.classList.toggle("active", item === button));
+      const tabs = button.closest<HTMLElement>("[data-liquid-tabs]");
+      if (tabs) {
+        updateLiquidTabs(tabs);
+      }
       copyButton.dataset.state = "";
       copyButton.setAttribute("aria-label", "Copy install command");
     });
@@ -752,18 +797,28 @@ function runPlaygroundCode(code: string): string[] {
 }
 
 function bindPlayground() {
-  let active = presets[0];
+  bindLiquidTabs();
+  let active =
+    presets.find((preset) => document.querySelector(`[data-preset="${preset.id}"].active`)) ?? presets[0];
   const status = document.querySelector<HTMLElement>("[data-status]")!;
   const output = document.querySelector<HTMLElement>("[data-output]")!;
   const editor = document.querySelector<HTMLTextAreaElement>(".code-editor")!;
+  const description = document.querySelector<HTMLElement>("[data-preset-description]")!;
 
   document.querySelectorAll<HTMLButtonElement>("[data-preset]").forEach((button) => {
     button.addEventListener("click", () => {
       active = presets.find((preset) => preset.id === button.dataset.preset) ?? presets[0];
-      app.innerHTML = renderPlayground(active.id);
-      bindNavigation();
-      bindSearch();
-      bindPlayground();
+      document
+        .querySelectorAll<HTMLButtonElement>("[data-preset]")
+        .forEach((item) => item.classList.toggle("active", item === button));
+      description.textContent = active.description;
+      editor.value = active.code;
+      status.textContent = "idle";
+      output.textContent = "Click Run to execute this preset.";
+      const tabs = button.closest<HTMLElement>("[data-liquid-tabs]");
+      if (tabs) {
+        updateLiquidTabs(tabs);
+      }
     });
   });
 

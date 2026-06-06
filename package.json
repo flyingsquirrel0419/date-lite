@@ -22,6 +22,9 @@
   ],
   "sideEffects": false,
   "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "docs:build": "vite build && mkdir -p dist/docs dist/playground && cp dist/index.html dist/404.html && cp dist/index.html dist/docs/index.html && cp dist/index.html dist/playground/index.html",
+    "docs:preview": "vite preview --host 127.0.0.1",
     "build": "tsup",
     "test": "vitest run",
     "test:watch": "vitest",

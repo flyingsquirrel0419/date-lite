@@ -31,6 +31,7 @@ jobs:
         run: npm run docs:build
         env:
           GITHUB_PAGES: "true"
+          VITE_CF_WEB_ANALYTICS_TOKEN: ${{ secrets.CF_WEB_ANALYTICS_TOKEN }}
 
       - name: Verify static route fallbacks
         run: test -f dist/404.html && test -f dist/docs/index.html && test -f dist/playground/index.html

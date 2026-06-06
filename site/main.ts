@@ -11,6 +11,10 @@ type PlaygroundPreset = {
   code: string;
 };
 
+type CloudflareBeaconWindow = Window & {
+  __cfBeaconLoaded?: boolean;
+};
+
 const installCommands = {
   npm: "npm install date-light",
   yarn: "yarn add date-light",
@@ -905,6 +909,22 @@ function bindPlayground() {
   });
 }
 
+function loadCloudflareAnalytics() {
+  const token = import.meta.env.VITE_CF_WEB_ANALYTICS_TOKEN;
+  const beaconWindow = window as CloudflareBeaconWindow;
+  if (!token || beaconWindow.__cfBeaconLoaded) {
+    return;
+  }
+
+  const script = document.createElement("script");
+  script.defer = true;
+  script.src = "https://static.cloudflareinsights.com/beacon.min.js";
+  script.dataset.cfBeacon = JSON.stringify({ token });
+  document.head.append(script);
+  beaconWindow.__cfBeaconLoaded = true;
+}
+
 window.addEventListener("popstate", () => render(routeFromLocation()));
 
+loadCloudflareAnalytics();
 render();

@@ -837,7 +837,8 @@ pre {
 }
 
 .runner-toolbar span,
-.output-console span {
+.output-console span,
+.terminal-status {
   color: var(--dim);
   font-size: 14px;
 }
@@ -855,25 +856,109 @@ pre {
   cursor: pointer;
 }
 
+.terminal-window {
+  margin: 18px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 22px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.07), transparent 30%),
+    rgba(7, 8, 10, 0.74);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 20px 70px rgba(0, 0, 0, 0.32);
+}
+
+.terminal-hostbar {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 14px;
+  align-items: center;
+  min-height: 46px;
+  padding: 0 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.025)),
+    rgba(20, 21, 24, 0.82);
+}
+
+.terminal-lights {
+  display: flex;
+  gap: 7px;
+}
+
+.terminal-lights span {
+  width: 11px;
+  height: 11px;
+  border-radius: 999px;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.42);
+}
+
+.terminal-lights span:nth-child(1) {
+  background: #ff6860;
+}
+
+.terminal-lights span:nth-child(2) {
+  background: #f1bd69;
+}
+
+.terminal-lights span:nth-child(3) {
+  background: #73dda1;
+}
+
+.terminal-title {
+  justify-self: center;
+  color: #d7d4ca;
+  font-size: 13px;
+  font-weight: 760;
+}
+
+.terminal-status {
+  justify-self: end;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+}
+
+.terminal-pane {
+  background: rgba(8, 9, 11, 0.52);
+}
+
+.terminal-editor {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.terminal-prompt {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 18px 22px 0;
+  color: var(--dim);
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 13px;
+}
+
+.terminal-prompt strong {
+  color: var(--mint);
+  font-weight: 780;
+}
+
 .code-editor {
   display: block;
   width: 100%;
   min-height: 230px;
   resize: vertical;
   border: 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 24px;
+  padding: 18px 22px 24px;
   color: #f0eee6;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.035), transparent 38%),
-    rgba(10, 11, 12, 0.58);
+  background: transparent;
   font-size: 15px;
   line-height: 1.72;
   outline: none;
 }
 
 .output-console {
-  background: rgba(10, 11, 12, 0.52);
+  background:
+    linear-gradient(180deg, rgba(115, 221, 161, 0.035), transparent 45%),
+    rgba(5, 7, 8, 0.58);
 }
 
 .output-console > div {

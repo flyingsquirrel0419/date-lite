@@ -456,13 +456,30 @@ function renderPlayground(activeId = "format"): string {
             </div>
             <button class="run-button" type="button" data-run>Run</button>
           </div>
-          <textarea class="code-editor" spellcheck="false" aria-label="TypeScript editor">${active.code}</textarea>
-          <div class="output-console">
-            <div>
-              <strong>Output</strong>
-              <span data-status>idle</span>
+          <div class="terminal-window">
+            <div class="terminal-hostbar">
+              <div class="terminal-lights" aria-hidden="true">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+              <span class="terminal-title">date-light playground</span>
+              <span class="terminal-status" data-status>idle</span>
             </div>
-            <pre><code data-output>Click Run to execute this preset.</code></pre>
+            <div class="terminal-pane terminal-editor">
+              <div class="terminal-prompt" aria-hidden="true">
+                <span>~/date-light</span>
+                <strong>edit preset.ts</strong>
+              </div>
+              <textarea class="code-editor" spellcheck="false" aria-label="TypeScript editor">${active.code}</textarea>
+            </div>
+            <div class="terminal-pane output-console">
+              <div>
+                <strong>Output</strong>
+                <span>console</span>
+              </div>
+              <pre><code data-output>Click Run to execute this preset.</code></pre>
+            </div>
           </div>
         </section>
       </main>

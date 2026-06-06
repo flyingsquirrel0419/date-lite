@@ -32,8 +32,8 @@ jobs:
         env:
           GITHUB_PAGES: "true"
 
-      - name: Add SPA fallback
-        run: cp dist/index.html dist/404.html
+      - name: Verify static route fallbacks
+        run: test -f dist/404.html && test -f dist/docs/index.html && test -f dist/playground/index.html
 
       - uses: actions/configure-pages@v5
 

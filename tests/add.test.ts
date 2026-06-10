@@ -59,6 +59,12 @@ describe("addYears", () => {
     expect(result.getMonth()).toBe(1);
     expect(result.getDate()).toBe(28);
   });
+  it("preserves Feb 29 when adding to another leap year", () => {
+    const result = addYears(new Date(2024, 1, 29), 4);
+    expect(result.getFullYear()).toBe(2028);
+    expect(result.getMonth()).toBe(1);
+    expect(result.getDate()).toBe(29);
+  });
   it("adds years normally", () => {
     const result = addYears(new Date(2026, 0, 15), 2);
     expect(result.getFullYear()).toBe(2028);

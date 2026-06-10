@@ -86,6 +86,18 @@ describe("differenceInMonths", () => {
     expect(differenceInMonths(a, b)).toBe(0);
   });
 
+  it("counts a full month when the later date is the last day of month", () => {
+    const a = new Date(2026, 1, 28); // Feb 28
+    const b = new Date(2026, 0, 31); // Jan 31
+    expect(differenceInMonths(a, b)).toBe(1);
+  });
+
+  it("normalizes late February before checking partial months", () => {
+    const a = new Date(2026, 1, 28); // Feb 28
+    const b = new Date(2026, 0, 30); // Jan 30
+    expect(differenceInMonths(a, b)).toBe(1);
+  });
+
   it("does not count a negative partial month", () => {
     const a = new Date(2026, 0, 31); // Jan 31
     const b = new Date(2026, 1, 1); // Feb 1

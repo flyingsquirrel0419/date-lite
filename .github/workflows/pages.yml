@@ -34,13 +34,13 @@ jobs:
           VITE_CF_WEB_ANALYTICS_TOKEN: ${{ secrets.CF_WEB_ANALYTICS_TOKEN }}
 
       - name: Verify static route fallbacks
-        run: test -f dist/404.html && test -f dist/docs/index.html && test -f dist/playground/index.html
+        run: test -f dist-docs/404.html && test -f dist-docs/docs/index.html && test -f dist-docs/playground/index.html
 
       - uses: actions/configure-pages@v5
 
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: dist
+          path: dist-docs
 
   deploy:
     needs: build

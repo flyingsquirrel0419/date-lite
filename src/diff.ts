@@ -5,6 +5,17 @@ const MS_PER_MINUTE = 60000;
 const MS_PER_HOUR = 3600000;
 const MS_PER_DAY = 86400000;
 
+function compareAsc(dateLeft: Date, dateRight: Date): number {
+  const diff = dateLeft.getTime() - dateRight.getTime();
+  if (diff < 0) return -1;
+  if (diff > 0) return 1;
+  return diff;
+}
+
+function isLastDayOfMonth(date: Date): boolean {
+  return date.getDate() === new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+}
+
 /**
  * Get the number of full calendar days between two dates.
  *
@@ -58,21 +69,44 @@ export function differenceInSeconds(dateLeft: Date, dateRight: Date): number {
 }
 
 /**
- * Get the number of full calendar months between two dates.
+ * Get the number of full months between two dates.
  *
- * Based on year and month values only — day and time are not considered.
+ * Accounts for day-of-month, so partial months are not counted.
  *
  * @param dateLeft - The later date
  * @param dateRight - The earlier date
- * @returns Number of full calendar months (positive if dateLeft > dateRight)
+ * @returns Number of full months (positive if dateLeft > dateRight)
  *
  * @example
  * differenceInMonths(new Date(2026, 5, 15), new Date(2026, 0, 15)) // 5
  */
 export function differenceInMonths(dateLeft: Date, dateRight: Date): number {
-  const yearDiff = dateLeft.getFullYear() - dateRight.getFullYear();
-  const monthDiff = dateLeft.getMonth() - dateRight.getMonth();
-  return yearDiff * 12 + monthDiff;
+  const left = new Date(dateLeft);
+  const workingLeft = new Date(dateLeft);
+  const right = new Date(dateRight);
+
+  const sign = compareAsc(workingLeft, right);
+  const difference = Math.abs(
+    (workingLeft.getFullYear() - right.getFullYear()) * 12 +
+      (workingLeft.getMonth() - right.getMonth()),
+  );
+
+  if (difference < 1) return 0;
+
+  if (workingLeft.getMonth() === 1 && workingLeft.getDate() > 27) {
+    workingLeft.setDate(30);
+  }
+
+  workingLeft.setMonth(workingLeft.getMonth() - sign * difference);
+
+  let isLastMonthNotFull = compareAsc(workingLeft, right) === -sign;
+
+  if (isLastDayOfMonth(left) && difference === 1 && compareAsc(left, right) === 1) {
+    isLastMonthNotFull = false;
+  }
+
+  const result = sign * (difference - Number(isLastMonthNotFull));
+  return result === 0 ? 0 : result;
 }
 
 /**
@@ -86,10 +120,16 @@ export function differenceInMonths(dateLeft: Date, dateRight: Date): number {
  * @returns Number of full calendar years (positive if dateLeft > dateRight)
  */
 export function differenceInYears(dateLeft: Date, dateRight: Date): number {
-  const yearDiff = dateLeft.getFullYear() - dateRight.getFullYear();
-  const monthDiff = dateLeft.getMonth() - dateRight.getMonth();
-  if (monthDiff < 0 || (monthDiff === 0 && dateLeft.getDate() < dateRight.getDate())) {
-    return yearDiff - 1;
-  }
-  return yearDiff;
+  const left = new Date(dateLeft);
+  const right = new Date(dateRight);
+
+  const sign = compareAsc(left, right);
+  const difference = Math.abs(left.getFullYear() - right.getFullYear());
+
+  left.setFullYear(1584);
+  right.setFullYear(1584);
+
+  const isLastYearNotFull = compareAsc(left, right) === -sign;
+  const result = sign * (difference - Number(isLastYearNotFull));
+  return result === 0 ? 0 : result;
 }

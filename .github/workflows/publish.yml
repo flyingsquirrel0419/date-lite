@@ -23,9 +23,9 @@ jobs:
 
       - run: npm ci
 
-      - name: Build
-        id: build
-        run: npm run build
+      - name: Validate package
+        id: check
+        run: npm run check
 
       - name: Verify bundle size
         id: size
@@ -37,10 +37,6 @@ jobs:
             echo "::error::Bundle size ${SIZE} KB exceeds 5 KB budget"
             exit 1
           fi
-
-      - name: Run tests
-        id: test
-        run: npm test
 
       - name: Check NPM_TOKEN availability
         id: token-check
@@ -76,15 +72,20 @@ jobs:
           echo "## Publish Summary" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "- **Tag:** \`$TAG\`" >> $GITHUB_STEP_SUMMARY
-          echo "- **Build:** ${{ steps.build.outcome }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Validation:** ${{ steps.check.outcome }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Bundle size:** ${{ steps.size.outputs.size_kb || 'N/A' }} KB (budget: 5 KB)" >> $GITHUB_STEP_SUMMARY
-          echo "- **Tests:** ${{ steps.test.outcome }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
 
+          CHECK_RESULT="${{ steps.check.outcome }}"
           HAS_TOKEN="${{ steps.token-check.outputs.has_token }}"
           PUBLISH_RESULT="${{ steps.publish.outcome }}"
 
-          if [ "$HAS_TOKEN" = "false" ]; then
+          if [ "$CHECK_RESULT" != "success" ]; then
+            echo "- **Publish:** Skipped (validation failed)" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "**Validation failed. Package was not published.**" >> $GITHUB_STEP_SUMMARY
+            exit 1
+          elif [ "$HAS_TOKEN" = "false" ]; then
             echo "- **Publish:** Skipped (NPM_TOKEN not configured)" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
             echo "> To enable npm publishing, add your npm access token as a repository secret named \`NPM_TOKEN\`." >> $GITHUB_STEP_SUMMARY
@@ -103,12 +104,4 @@ jobs:
             echo "- 2FA is enabled on npm but token is not an Automation token" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
             echo "> Fix: Go to https://www.npmjs.com/settings/tokens and create a **Classic Automation token** or a **Granular Access Token with Read and Write** permission." >> $GITHUB_STEP_SUMMARY
-          fi
-
-          BUILD_RESULT="${{ steps.build.outcome }}"
-          TEST_RESULT="${{ steps.test.outcome }}"
-          if [ "$BUILD_RESULT" != "success" ] || [ "$TEST_RESULT" != "success" ]; then
-            echo "" >> $GITHUB_STEP_SUMMARY
-            echo "**Build or tests failed. Package was not published.**" >> $GITHUB_STEP_SUMMARY
-            exit 1
           fi

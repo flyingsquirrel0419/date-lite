@@ -98,6 +98,12 @@ describe("differenceInMonths", () => {
     expect(differenceInMonths(a, b)).toBe(1);
   });
 
+  it("does not treat Feb 28 in a leap year as month-end", () => {
+    const a = new Date(2024, 1, 28); // Feb 28
+    const b = new Date(2024, 0, 29); // Jan 29
+    expect(differenceInMonths(a, b)).toBe(0);
+  });
+
   it("does not count a negative partial month", () => {
     const a = new Date(2026, 0, 31); // Jan 31
     const b = new Date(2026, 1, 1); // Feb 1

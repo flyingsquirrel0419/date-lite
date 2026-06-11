@@ -24,11 +24,11 @@
   "sideEffects": false,
   "scripts": {
     "dev": "vite --host 127.0.0.1",
-    "docs:build": "vite build --outDir dist-docs && mkdir -p dist-docs/docs dist-docs/playground && cp dist-docs/index.html dist-docs/404.html && cp dist-docs/index.html dist-docs/docs/index.html && cp dist-docs/index.html dist-docs/playground/index.html",
+    "docs:build": "vite build --outDir dist-docs && node ./scripts/build-docs.cjs",
     "docs:preview": "vite preview --outDir dist-docs --host 127.0.0.1",
     "build": "tsup",
     "test": "vitest run",
-    "test:package": "npm run build && node -e \"const lib = require('.'); if (typeof lib.format !== 'function') throw new Error('CJS entrypoint failed')\" && node --input-type=module -e \"const lib = await import('date-light'); if (typeof lib.format !== 'function') throw new Error('ESM entrypoint failed')\"",
+    "test:package": "npm run build && node ./scripts/test-package.cjs",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
     "bench": "vitest bench",

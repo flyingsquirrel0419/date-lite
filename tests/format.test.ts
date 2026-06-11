@@ -130,6 +130,13 @@ describe("parse — various patterns", () => {
     expect(d.getMinutes()).toBe(0);
     expect(d.getSeconds()).toBe(0);
   });
+
+  it("parses patterns with trailing literal characters", () => {
+    const d = parse("2026-01-15.", "yyyy-MM-dd.");
+    expect(d.getFullYear()).toBe(2026);
+    expect(d.getMonth()).toBe(0);
+    expect(d.getDate()).toBe(15);
+  });
 });
 
 describe("parse — error cases", () => {
@@ -161,12 +168,6 @@ describe("parse — error cases", () => {
     expect(() => parse("2026-01-15 extra", "yyyy-MM-dd")).toThrow(RangeError);
   });
 
-  it("parses patterns with trailing literal characters", () => {
-    const d = parse("2026-01-15.", "yyyy-MM-dd.");
-    expect(d.getFullYear()).toBe(2026);
-    expect(d.getMonth()).toBe(0);
-    expect(d.getDate()).toBe(15);
-  });
 });
 
 describe("parse — round-trip with format", () => {

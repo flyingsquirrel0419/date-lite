@@ -101,7 +101,7 @@ That is the point. For those jobs, use `Intl`, Temporal, Luxon, or date-fns dire
 | date-fns (20 functions) | 18.34 KB    | Same common-operation comparison   |
 | date-fns (full)         | 261.3 KB    | Full package                       |
 
-date-light is **8.4x smaller** than the same 20 date-fns functions and **1.4x smaller** than dayjs core.
+date-light (39 functions) is **8.4x smaller** than importing 20 comparable date-fns functions and **1.4x smaller** than dayjs core.
 
 ## Documentation
 

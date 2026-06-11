@@ -93,7 +93,7 @@ export function differenceInMonths(dateLeft: Date, dateRight: Date): number {
 
   if (difference < 1) return 0;
 
-  if (workingLeft.getMonth() === 1 && workingLeft.getDate() > 27) {
+  if (workingLeft.getMonth() === 1 && isLastDayOfMonth(workingLeft)) {
     workingLeft.setDate(30);
   }
 

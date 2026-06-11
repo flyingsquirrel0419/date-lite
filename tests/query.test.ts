@@ -70,4 +70,9 @@ describe("getWeekOfYear", () => {
     // Dec 31, 2026 is Thursday → ISO week 53
     expect(getWeekOfYear(new Date(2026, 11, 31))).toBeGreaterThanOrEqual(52);
   });
+
+  it("handles Sunday as ISO day 7", () => {
+    // Jan 4, 2026 is Sunday and belongs to ISO week 1
+    expect(getWeekOfYear(new Date(2026, 0, 4))).toBe(1);
+  });
 });

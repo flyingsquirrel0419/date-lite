@@ -130,6 +130,13 @@ describe("parse — various patterns", () => {
     expect(d.getMinutes()).toBe(0);
     expect(d.getSeconds()).toBe(0);
   });
+
+  it("parses patterns with trailing literal characters", () => {
+    const d = parse("2026-01-15.", "yyyy-MM-dd.");
+    expect(d.getFullYear()).toBe(2026);
+    expect(d.getMonth()).toBe(0);
+    expect(d.getDate()).toBe(15);
+  });
 });
 
 describe("parse — error cases", () => {
@@ -139,6 +146,10 @@ describe("parse — error cases", () => {
 
   it("throws RangeError on unexpected end of input", () => {
     expect(() => parse("2026-01", "yyyy-MM-dd")).toThrow(RangeError);
+  });
+
+  it("throws RangeError when token input is shorter than expected", () => {
+    expect(() => parse("2026-01-", "yyyy-MM-dd")).toThrow(RangeError);
   });
 
   it("throws RangeError on invalid calendar date", () => {
@@ -156,6 +167,7 @@ describe("parse — error cases", () => {
   it("throws RangeError on trailing input", () => {
     expect(() => parse("2026-01-15 extra", "yyyy-MM-dd")).toThrow(RangeError);
   });
+
 });
 
 describe("parse — round-trip with format", () => {
@@ -210,6 +222,10 @@ describe("format — all tokens", () => {
     expect(format(morning, "h:mm a")).toBe("9:05 AM");
     const evening = new Date(2026, 0, 15, 14, 30);
     expect(format(evening, "hh:mm a")).toBe("02:30 PM");
+  });
+
+  it("formats hh as zero-padded 12-hour time", () => {
+    expect(format(new Date(2026, 0, 15, 9, 0), "hh")).toBe("09");
   });
 
   it("formats midnight as 12 AM", () => {
